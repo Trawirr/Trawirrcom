@@ -1,0 +1,52 @@
+html, body {
+    background-color: #e6f2f5;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100%;
+}
+
+.center {
+    margin: 0 auto;
+    width: 50%;
+    height: 100%;
+    background-color: white;
+    font-size: 24px;
+    color: black;
+    padding: 10px;
+    padding-top: 60px;
+    border: solid black 1px;
+}
+
+.centerdiv {
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.topnav {
+    overflow: hidden;
+    background-color: #2f3636;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    text-align: center;
+}
+  
+.topnav a {
+    color: #d5d5d5;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 24px;
+    display: inline-block;
+    margin: 0px 20px;
+}
+
+.topnav a:hover{
+    color: #f8f8f8;
+}
+
+.right-element{
+    float:right;
+    z-index: -1;
+}
+

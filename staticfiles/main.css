@@ -1,0 +1,22 @@
+html, body {
+    background-color: #a0a080;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100%;
+}
+
+.center {
+    margin: 0 auto;
+    width: 50%;
+    height: 100%;
+    background-color: #242424;
+    font-size: 24px;
+    color: #dedede;
+    padding: 10px;
+}
+
+.centerdiv {
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}

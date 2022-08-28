@@ -1,0 +1,75 @@
+html, body {
+    font-family: 'Lato', sans-serif;
+    background-color: #e6f2f5;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100%;
+}
+
+.center {
+    margin: 0 auto;
+    width: 900px;
+    min-height: 800px   ;
+    background-color: #fafafa;
+    font-size: 24px;
+    color: black;
+    padding: 10px;
+    padding-top: 75px;
+    border: solid black 1px;
+}
+
+.centerdiv {
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.topnav {
+    overflow: hidden;
+    background-color: #2f3636;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    text-align: center;
+}
+  
+.topnav a, img {
+    color: #d5d5d5;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 24px;
+    display: inline-block;
+    margin: 0px 20px;
+}
+
+.topnav a:hover{
+    color: #f8f8f8;
+}
+
+.user-info{
+    position: absolute;
+    right: 10px;
+}
+
+.user-nickname{
+    position: absolute;
+    right: 160px;
+}
+
+.user-image{
+    position: absolute;
+    right: 120px;
+    border-radius: 50%;
+}
+
+.mybtn{
+    text-decoration: none;
+    background-color: #2f3636;
+    color: #d5d5d5;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.mybtn:hover{
+    color: #f8f8f8;
+}

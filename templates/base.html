@@ -1,0 +1,30 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Djangame</title>
+        <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    </head>
+<body>
+
+<div class="topnav">
+        <a class="active" href="#">Articles</a>
+        <a href="#">About</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}" class="user-info">Logout</a>
+        {% else %}
+        <a href="{% url 'login' %}" class="user-info">Log in</a>
+        {% endif %}
+        <img alt="prof_img" src="{{ custom_user.profile_image.url|default:'/static/upload/profile_images/default_icon.png' }}" width="30" height="30" class="user-image">
+        <a href="#" class="user-nickname">{{ custom_user.nickname|default:"Guest" }}</a>
+</div>
+
+<div class="center">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>
