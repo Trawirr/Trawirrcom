@@ -17,8 +17,8 @@
         {% else %}
         <a href="{% url 'login' %}" class="user-info">Log in</a>
         {% endif %}
-        <img alt="prof_img" src="{{ custom_user.profile_image.url|default:'/static/upload/profile_images/default_icon.png' }}" width="30" height="30" class="user-image">
-        <a href="#" class="user-nickname">{{ custom_user.nickname|default:"Guest" }}</a>
+        <img alt="prof_img" src="{{ user.author.profile_image.url|default:'/static/upload/profile_images/default_icon.png' }}" width="30" height="30" class="user-image">
+        <a href="#" class="user-nickname">{{ user.author.nickname|default:"Guest" }}</a>
 </div>
 
 <div class="center">

@@ -25,6 +25,13 @@ def article(request, article_id):
 def add_article(request):
     template = loader.get_template('add_article.html')
 
+    if request.method == "POST":
+        author = Author.objects.get(user=request.user)
+        img = request.POST['image']
+        text = request.POST['text']
+        new_article = Article(author=author, text=text, image=img)
+        new_article.save()
+
     context = {}
         
     return HttpResponse(template.render(context, request))
