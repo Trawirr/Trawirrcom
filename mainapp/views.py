@@ -14,7 +14,17 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 def article(request, article_id):
-    pass
+    template = loader.get_template('article.html')
+    article = Article.objects.get(id=article_id)
+
+    context = {
+        'article': article,
+    }
+    return HttpResponse(template.render(context, request))
 
 def add_article(request):
-    pass
+    template = loader.get_template('add_article.html')
+
+    context = {}
+        
+    return HttpResponse(template.render(context, request))
