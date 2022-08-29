@@ -5,5 +5,5 @@
 <h1>{{ article.title }}</h1>
 by {{ article.author.nickname }} {{ article.date }} {% for tag in article.tags.all %}<span class="article-tag">{{ tag.name }}</span>{% endfor %}
 <hr>
-{{ article.text }}
+{{ article.parsed_text|safe }}
 {% endblock %}

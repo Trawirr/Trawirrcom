@@ -27,9 +27,14 @@ class Article(models.Model):
     def __str__(self) -> str:
         return f"by {self.author.nickname}, created on {self.date}, text: {self.text[:20]}..."
 
+    @property
     def thumbnail_text(self):
         words = self.text.split(' ')
         for i in range(len(words)):
             if len(' '.join(words[:i])) > 100 - 2 * len(self.title):
                 return ' '.join(words[:i-1])
         return self.text
+
+    @property
+    def parsed_text(self):
+        return '\n'.join([f"<p>{t}</p>" for t in self.text.split('\n')])
