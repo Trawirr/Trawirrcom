@@ -17,15 +17,22 @@ class Author(models.Model):
 
 # Create your models here.
 class Article(models.Model):
+    class Meta:
+        ordering = ['-date']
+    
     title = models.CharField(max_length=50, default="Title")
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    date = models.DateField(default=date.today)
+    date = models.DateTimeField(default=datetime.today())
     text = models.TextField()
     image = models.ImageField(upload_to='static/upload/article_images/')
     tags = models.ManyToManyField(Tag)
 
     def __str__(self) -> str:
         return f"by {self.author.nickname}, created on {self.date}, text: {self.text[:20]}..."
+
+    @property
+    def date_dmy(self):
+        return self.date.strftime("%d %b %Y")
 
     @property
     def thumbnail_text(self):

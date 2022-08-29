@@ -84,12 +84,12 @@ a{
     height: 200px;
     margin-top: 30px;
     margin-right: auto;
+    margin-left: auto;
     border: solid black 1px;
 }
 
 .thumbnail:hover{
     color: gray;
-    margin-left: 20px;
 }
 
 .author{

@@ -13,7 +13,7 @@
         <div class="article-image"><img src="{{ article.image.url }}"></div>
         <!-- <img src="{{ article.image.url }}"> -->
         <div class="title">{{ article.title }}</div>
-        <div class="author">by {{ article.author.nickname }} {{ article.date }}</div>
+        <div class="author">by {{ article.author.nickname }}, {{ article.date_dmy }}</div>
         {{ article.thumbnail_text }}...
     </div>
 </a>
