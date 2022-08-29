@@ -1,18 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <div class="centerdiv">
     <a href="/add_article" class="mybtn">Add a new article</a>
 </div>
+{% endif %}
 
 {% for article in articles %}
-<a href="#">
-    <div class="thumbnail">
+<a href="/article/{{ article.id }}">
+    <div class="thumbnail"> 
         <div class="article-image"><img src="{{ article.image.url }}"></div>
         <!-- <img src="{{ article.image.url }}"> -->
         <div class="title">{{ article.title }}</div>
-        <div class="author">by {{ article.author.nickname }}</div>
-        {{ article.text }}...
+        <div class="author">by {{ article.author.nickname }} {{ article.date }}</div>
+        {{ article.thumbnail_text }}...
     </div>
 </a>
 {% endfor %}

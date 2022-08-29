@@ -80,15 +80,16 @@ a{
 }
 
 .thumbnail{
-    width: 80%;
+    width: 75%;
     height: 200px;
-    margin-top: 20px;
+    margin-top: 30px;
     margin-right: auto;
     border: solid black 1px;
 }
 
 .thumbnail:hover{
     color: gray;
+    margin-left: 20px;
 }
 
 .author{
@@ -105,7 +106,7 @@ a{
     justify-content: center;
     float:left;
     height:100%;
-    width: 40%;
+    width: 50%;
     margin-right: 10px;
 }
 
