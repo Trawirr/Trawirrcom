@@ -3,6 +3,9 @@ from django.conf import settings
 from django.db import models
 from datetime import datetime, date
 
+class Tag(models.Model):
+    name = models.CharField(max_length=20, primary_key=True)
+
 class Author(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=20, default="")
@@ -19,6 +22,7 @@ class Article(models.Model):
     date = models.DateField(default=date.today)
     text = models.TextField()
     image = models.ImageField(upload_to='static/upload/article_images/')
+    tags = models.ManyToManyField(Tag)
 
     def __str__(self) -> str:
         return f"by {self.author.nickname}, created on {self.date}, text: {self.text[:20]}..."
