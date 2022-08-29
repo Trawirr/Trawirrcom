@@ -10,7 +10,7 @@
 <body>
 
 <div class="topnav">
-        <a class="active" href="#">Articles</a>
+        <a class="active" href="/">Articles</a>
         <a href="#">About</a>
         {% if user.is_authenticated %}
         <a href="{% url 'logout' %}" class="user-info">Logout</a>

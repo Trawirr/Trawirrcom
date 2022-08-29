@@ -116,3 +116,10 @@ a{
     padding: 0;
     margin: 0;
 }
+
+.article-tag {
+    padding: 4px;
+    background-color: lightgray;
+    border-radius: 10%;
+    margin: 0 10px;
+}

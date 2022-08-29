@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-Test
+<img src="{{ article.image.url }}">
+<h1>{{ article.title }}</h1>
+by {{ article.author.nickname }} {{ article.date }} {% for tag in article.tags.all %}<span class="article-tag">{{ tag.name }}</span>{% endfor %}
+<hr>
+{{ article.text }}
 {% endblock %}
