@@ -5,5 +5,16 @@
     <a href="/add_article" class="mybtn">Add a new article</a>
 </div>
 
+{% for article in articles %}
+<a href="#">
+    <div class="thumbnail">
+        <div class="article-image"><img src="{{ article.image.url }}"></div>
+        <!-- <img src="{{ article.image.url }}"> -->
+        <div class="title">{{ article.title }}</div>
+        <div class="author">by {{ article.author.nickname }}</div>
+        {{ article.text }}...
+    </div>
+</a>
+{% endfor %}
 
 {% endblock %}

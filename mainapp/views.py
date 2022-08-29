@@ -5,7 +5,10 @@ from .models import *
 def index(request):
     template = loader.get_template('index.html')
 
-    context = {}
+    articles = Article.objects.all()
+    context = {
+        'articles': articles,
+    }
 
     if request.user.is_authenticated:
         custom_user = Author.objects.get(user=request.user)
