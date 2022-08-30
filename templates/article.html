@@ -3,7 +3,7 @@
 {% block content %}
 <img src="{{ article.image.url }}">
 <h1>{{ article.title }}</h1>
-by {{ article.author.nickname }} {{ article.date }} {% for tag in article.tags.all %}<span class="article-tag">{{ tag.name }}</span>{% endfor %}
+by {{ article.author.nickname }}, {{ article.date_dmy }} {% for tag in article.tags.all %}<span class="article-tag">{{ tag.name }}</span>{% endfor %}
 <hr>
 {{ article.parsed_text|safe }}
 {% endblock %}
