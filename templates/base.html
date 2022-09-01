@@ -22,16 +22,6 @@
         <li><img alt="prof_img" src="{{ user.author.profile_image.url|default:'/static/upload/profile_images/default_icon.png' }}" width="30" height="30" class="user-image"></li>
         <li><a href="#" class="user-nickname">{{ user.author.nickname|default:"Guest" }}</a></li>
     </ul>
-        
-        
-        
-        {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}" class="user-info">Logout</a>
-        {% else %}
-        <a href="{% url 'login' %}" class="user-info">Log in</a>
-        {% endif %}
-        <img alt="prof_img" src="{{ user.author.profile_image.url|default:'/static/upload/profile_images/default_icon.png' }}" width="30" height="30" class="user-image">
-        <a href="#" class="user-nickname">{{ user.author.nickname|default:"Guest" }}</a>
 </div>
 
 <div class="center">
