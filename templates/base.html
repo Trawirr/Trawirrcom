@@ -12,7 +12,14 @@
 <div class="topnav">
     <ul>
         <li><a class="active" href="/">Articles</a></li>
-        <li><a href="#">Projects</a></li>
+        <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Projects</a>
+            <div class="dropdown-content">
+                <a href="#">Borsuk-Ulam</a>
+                <a href="#">Project 2</a>
+                <a href="#">Project 3</a>
+            </div>
+        </li>
         <li><a href="#">About</a></li>
         {% if user.is_authenticated %}
         <li><a href="{% url 'logout' %}" class="user-info">Logout</a></li>
