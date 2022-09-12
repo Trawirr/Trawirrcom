@@ -39,6 +39,14 @@ def add_article(request):
         
     return HttpResponse(template.render(context, request))
 
+def projects(request):
+    template = loader.get_template('projects.html')
+
+    context = {
+        
+    }
+    return HttpResponse(template.render(context, request))
+
 def dropdown(request):
     template = loader.get_template('dropdown.html')
     context = {}
