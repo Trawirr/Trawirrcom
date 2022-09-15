@@ -3,6 +3,8 @@ import numpy as np
 from requests import get
 import time
 
+from BorsukUlam.models import BorsukUlamPoint
+
 BASE = 'https://api.openweathermap.org/data/2.5/weather'
 API_KEY = '00dbce25503eebf0535dd18a1dfb2ba7'
 UNITS = 'metric'
@@ -49,7 +51,7 @@ class BorsukUlam():
 
         return R*c
 
-    def find_Borsuk_Ulam(self, threshold = 1):
+    def find_Borsuk_Ulam(self, threshold = .1):
         point = self.get_random_coordinates()
         while True:
             anti_point = self.get_antipodal_point(point)
@@ -57,13 +59,28 @@ class BorsukUlam():
             print(f'Temp diff = {temp_diff:.2f} \'C')
             if temp_diff < threshold:
                 city = self.get_nearest_city(point)
-                #city_point = (city['lat'], city['lon'])
                 city_anti = self.get_nearest_city(anti_point)
-                #city_anti_point = (city_anti['lat'], city_anti['lon'])
                 city_distance = self.get_distance_between_coordinates(point, (float(city['lat']), float(city['lon'])))//10/100
                 city_anti_distance = self.get_distance_between_coordinates(anti_point, (float(city_anti['lat']), float(city_anti['lon'])))//10/100
+
+                bu1 = BorsukUlamPoint(
+                    lat=point[0], 
+                    lon=point[1], 
+                    city=city['name'],
+                    distance=city_distance, 
+                    temperature=self.get_temperature_on_coordinates(point)
+                )
+                bu2 = BorsukUlamPoint(
+                    lat=anti_point[0], 
+                    lon=anti_point[1], 
+                    city=city_anti['name'], 
+                    distance=city_anti_distance, 
+                    temperature=self.get_temperature_on_coordinates(anti_point)
+                )
+                bu1.save()
+                bu2.save()
                 info = f"Borsuk-Ulam found!\nPoint:           {point} - {city_distance}km from {city['name']}\nAntipodal point: {anti_point} - {city_anti_distance}km from {city_anti['name']}\nTemperature: {self.get_temperature_on_coordinates(point)}"
-                return info
+                print(info)
                 break
             point = self.get_next_point(point, temp_diff)
             point = (point[0] if abs(point[0]) < 90 else point[0] + -np.sign(point[0])*180,
