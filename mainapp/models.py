@@ -3,6 +3,10 @@ from django.conf import settings
 from django.db import models
 from datetime import datetime, date
 
+class Variable(models.Model):
+    name = models.CharField(max_length=20)
+    value = models.CharField(max_length=20)
+
 class Tag(models.Model):
     name = models.CharField(max_length=20, primary_key=True)
 
