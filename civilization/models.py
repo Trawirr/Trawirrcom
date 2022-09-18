@@ -12,8 +12,12 @@ class Tile(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     height = models.IntegerField()
+    color = models.IntegerField(default=0)
     owner = models.ForeignKey(Civilization, blank=True, null=True, related_name="tiles", on_delete=models.CASCADE)
     areas = models.ManyToManyField(Area, related_name="tiles")
 
     class Meta:
         unique_together = ('x', 'y')
+
+    def __str__(self) -> str:
+        return f"({self.x}, {self.y}), {self.height}m"

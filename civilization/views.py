@@ -5,6 +5,9 @@ from .models import *
 def index(request):
     template = loader.get_template('civilization.html')
 
+    tiles = Tile.objects.all()
+
     context = {
+        'tiles': tiles,
     }
     return HttpResponse(template.render(context, request))
