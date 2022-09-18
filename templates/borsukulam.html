@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{{ info }}
+<h1>Borsuk-Ulam points</h1>
+<hr>
+{% for point in points %}
+<p>Coordinates: <a href="{{ point.get_map_link }}">{{ point.coords }}</a></p>
+<p>Temperature: {{ point.temperature_2f  }}</p>
+<p>{{ point.distance }}km {{ point.direction }} from <a href="{{ point.get_city_link }}" target="_blank" {% if not point.city_exists %}style="color: red"{% endif %}>{{ point.city }}</a></p>
+<hr>
+{% endfor %}
 {% endblock %}
