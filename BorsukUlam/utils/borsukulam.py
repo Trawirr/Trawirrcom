@@ -1,9 +1,10 @@
 import reverse_geocoder as rg
 import numpy as np  
 from requests import get
-import time
+from datetime import datetime
 
 from BorsukUlam.models import BorsukUlamPoint
+from mainapp.models import Variable
 
 BASE = 'https://api.openweathermap.org/data/2.5/weather'
 API_KEY = '00dbce25503eebf0535dd18a1dfb2ba7'
@@ -51,6 +52,18 @@ class BorsukUlam():
 
         return R*c
 
+    def get_diretction(self, point1, point2):
+        direction = ""
+        if point2[0] < point1[0]:
+            direction += "N"
+        else:
+            direction += "S"
+        if point2[1] < point1[1]:
+            direction += "E"
+        else:
+            direction += "W"
+        return direction
+
     def find_Borsuk_Ulam(self, threshold = .1):
         point = self.get_random_coordinates()
         while True:
@@ -62,25 +75,34 @@ class BorsukUlam():
                 city_anti = self.get_nearest_city(anti_point)
                 city_distance = self.get_distance_between_coordinates(point, (float(city['lat']), float(city['lon'])))//10/100
                 city_anti_distance = self.get_distance_between_coordinates(anti_point, (float(city_anti['lat']), float(city_anti['lon'])))//10/100
+                direction = self.get_diretction(point, (float(city['lat']), float(city['lon'])))
+                direction_anti = self.get_diretction(anti_point, (float(city_anti['lat']), float(city_anti['lon'])))
 
                 bu1 = BorsukUlamPoint(
                     lat=point[0], 
                     lon=point[1], 
-                    city=city['name'],
+                    city=f"{city['name']}, {city['cc']}",
                     distance=city_distance, 
+                    direction=direction,
                     temperature=self.get_temperature_on_coordinates(point)
                 )
                 bu2 = BorsukUlamPoint(
                     lat=anti_point[0], 
                     lon=anti_point[1], 
-                    city=city_anti['name'], 
+                    city=f"{city_anti['name']}, {city_anti['cc']}",
                     distance=city_anti_distance, 
+                    direction=direction_anti,
                     temperature=self.get_temperature_on_coordinates(anti_point)
                 )
                 bu1.save()
                 bu2.save()
+                print(city)
+                print(city_anti)
                 info = f"Borsuk-Ulam found!\nPoint:           {point} - {city_distance}km from {city['name']}\nAntipodal point: {anti_point} - {city_anti_distance}km from {city_anti['name']}\nTemperature: {self.get_temperature_on_coordinates(point)}"
                 print(info)
+                last_update = Variable.objects.get(name="last borsuk ulam")
+                last_update.value = datetime.now().strftime("%D %H:%M")
+                last_update.save()
                 break
             point = self.get_next_point(point, temp_diff)
             point = (point[0] if abs(point[0]) < 90 else point[0] + -np.sign(point[0])*180,
