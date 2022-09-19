@@ -6,6 +6,7 @@ def index(request):
     template = loader.get_template('civilization.html')
 
     tiles = Tile.objects.all()
+    tiles = [Tile.objects.filter(y=y) for y in Tile.objects.values_list('y', flat=True).distinct()]
 
     context = {
         'tiles': tiles,

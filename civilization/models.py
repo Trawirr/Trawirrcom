@@ -12,7 +12,7 @@ class Tile(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     height = models.IntegerField()
-    color = models.IntegerField(default=0)
+    color = models.CharField(max_length=4, default="#000")
     owner = models.ForeignKey(Civilization, blank=True, null=True, related_name="tiles", on_delete=models.CASCADE)
     areas = models.ManyToManyField(Area, related_name="tiles")
 

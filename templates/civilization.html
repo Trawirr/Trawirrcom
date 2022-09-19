@@ -5,8 +5,12 @@
 <hr>
 <div class="map-div">
     <table class="map-table">
-        {% for tile in tiles %}
-            <tr><td style="background-color: #{{ tile.color }};"></td></tr>
+        {% for row in tiles %}
+        <tr>
+            {% for tile in row %}
+                <td style="background-color: #{{ tile.color }};"></td>
+            {% endfor %}
+        </tr>
         {% endfor %}
     </table>
 </div>
