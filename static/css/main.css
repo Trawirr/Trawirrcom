@@ -211,9 +211,10 @@ div.gallery {
 td, th {
     width: 20px;
     height: 20px;
-    border: 0.5px solid black;
+    /* border: 0.5px solid black; */
 }
 
 table{
     border-collapse: collapse;
+    border: 2px solid black;
 }
