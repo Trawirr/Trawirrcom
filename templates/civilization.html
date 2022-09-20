@@ -6,11 +6,11 @@
 <div class="map-div">
     <table class="map-table">
         {% for row in tiles %}
-        <tr>
-            {% for tile in row %}
-                <td style="background-color: #{{ tile.color }};"></td>
-            {% endfor %}
-        </tr>
+            <tr>
+                {% for tile in row %}
+                    <td style="background-color: #{{ tile.color }};"></td>
+                {% endfor %}
+            </tr>
         {% endfor %}
     </table>
 </div>

@@ -1,8 +1,8 @@
 import numpy as np
 
 WATER_COLORS = [
-    [-1.0, np.array([0,0,0])],
-    [-.5, np.array([0,0,0])],
+    [-1.0, np.array([0,0,100])],
+    [-.5, np.array([0,0,120])],
     [0, np.array([0,0,255])],
     [1.0, np.array([0,150,255])]
 ]
@@ -23,14 +23,17 @@ def decimal_hex(value):
     b = digits[value%16]
     return r+g+b
 
+def distance(x, y, size):
+    return ((x - size/2)**2 + (y - size/2)**2)**.5/(size/2) 
+    #return min(1, (size+size)/6/((size/2 - x)**2 + (size/2 - y)**2 + 1/64)**.5)
+
 def hex_color(value):
     value = int(value)
     digits = '0123456789ABCDEF'
-    print(value//16)
-    print(value%16)
     return f"{digits[value//16]}{digits[value%16]}"
 
 def get_color(colors, height):
+    print(height)
     for i, (h, _) in enumerate(colors):
         if h >= height:
             (h1, color1), (h2, color2) = colors[i-1], colors[i]
