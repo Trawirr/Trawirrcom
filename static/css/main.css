@@ -220,8 +220,8 @@ h1 {
 }
 
 td, th {
-    width: 16px;
-    height: 16px;
+    width: 8px;
+    height: 8px;
     /* border: 0.5px solid black; */
 }
 

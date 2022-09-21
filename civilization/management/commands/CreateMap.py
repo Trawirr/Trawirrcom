@@ -10,7 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         Tile.objects.all().delete()
         octaves = [3, 6, 16, 24]
-        size = 50
+        size = 100
         noises = [PerlinNoise(octaves=n) for n in octaves]
         for x in range(size):
             for y in range(size):

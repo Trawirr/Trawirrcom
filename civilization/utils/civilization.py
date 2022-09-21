@@ -1,4 +1,5 @@
 import numpy as np
+from civilization.models import Tile, Area, Civilization
 
 WATER_COLORS = [
     [-1.0, np.array([0,0,100])],
@@ -33,7 +34,6 @@ def hex_color(value):
     return f"{digits[value//16]}{digits[value%16]}"
 
 def get_color(colors, height):
-    print(height)
     for i, (h, _) in enumerate(colors):
         if h >= height:
             (h1, color1), (h2, color2) = colors[i-1], colors[i]
@@ -46,3 +46,27 @@ def get_land_color(height):
 
 def get_water_color(height):
     return get_color(WATER_COLORS, height)
+
+def get_tiles_by_height(condition, value):
+    if condition == "higher":
+        return Tile.objects.filter(height__gte=value)
+    elif condition == "lower":
+        return Tile.objects.filter(height__lte=value)
+
+def get_adjacent_tiles(x, y):
+    x = y = [-1, 1]
+    
+
+def get_separate_areas(condition, value):
+    all_tiles = list(get_tiles_by_height(condition, value))
+    areas = []
+    while all_tiles:
+        to_visit = [all_tiles[0]]
+        area_tiles = []
+        while to_visit:
+            tile = to_visit.pop(0)
+            if tile in all_tiles:
+                all_tiles.remove(tile)
+                area_tiles.append(tile)
+                for tile in get_adjacent_tiles(tile.x, tile.y):
+                    to_visit.append(tile)
