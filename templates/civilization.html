@@ -8,7 +8,7 @@
         {% for row in tiles %}
             <tr>
                 {% for tile in row %}
-                    <td style="background-color: #{{ tile.color }};"></td>
+                    <td style="background-color: #{{ tile.color }};" title="({{ tile.x }}, {{ tile.y }}), {{ tile.height_m }}m"></td>
                 {% endfor %}
             </tr>
         {% endfor %}

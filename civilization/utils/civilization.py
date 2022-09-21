@@ -1,4 +1,5 @@
 from civilization.models import *
+import random
 
 def distance(x, y, size):
     return ((x - size/2)**2 + (y - size/2)**2)**.5/(size/2) 
@@ -10,6 +11,9 @@ def get_tiles_by_height(condition, value):
     elif condition == "lower":
         return Tile.objects.filter(height__lte=value)
 
+def get_tiles_by_type(value):
+    return Tile.objects.filter(tile_type=value)
+
 def get_adjacent_tiles(x, y):
     coords = [(x-1,y), (x+1,y), (x,y-1), (x,y+1)]
     adjacent_tiles = []
@@ -20,8 +24,11 @@ def get_adjacent_tiles(x, y):
             pass
     return adjacent_tiles
 
-def get_separate_areas(condition, value):
-    all_tiles = list(get_tiles_by_height(condition, value))
+def get_separate_areas(mode, value, condition=None):
+    if mode == "height":
+        all_tiles = list(get_tiles_by_height(condition, value))
+    elif mode == "type":
+        all_tiles = list(get_tiles_by_type(value))
     areas = []
     while all_tiles:
         to_visit = [all_tiles[0]]
@@ -35,3 +42,12 @@ def get_separate_areas(condition, value):
                     to_visit.append(tile)
         areas.append(area_tiles)
     return areas
+
+def create_sources(num_sources):
+    size = max(Tile.objects.values_list('x', flat=True))
+    sources = []
+    while num_sources:
+        x_random, y_random = random.randint(0, size), random.randint(0, size)
+        if random.random() < Tile.objects.get(x=x_random, y=y_random).height:
+            print(f"Source ({x_random}, {y_random})")
+            num_sources -= 1
