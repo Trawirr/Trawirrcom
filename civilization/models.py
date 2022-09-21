@@ -25,7 +25,8 @@ class Tile(models.Model):
 
     @property
     def height_m(self):
-        return f"{self.height*5000:.2f}"
+        if self.tile_type == "L": return f"{self.height*5000:.2f}"
+        else: return f"{self.height*1000:.2f}"
 
     @property
     def color(self):

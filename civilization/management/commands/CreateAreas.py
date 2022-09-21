@@ -17,3 +17,6 @@ class Command(BaseCommand):
 
         print("Generating sources...")
         create_sources(10)
+
+        print("Generating tribes...")
+        create_tribes(10)

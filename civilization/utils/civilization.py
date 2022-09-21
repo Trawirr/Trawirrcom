@@ -43,6 +43,9 @@ def get_separate_areas(mode, value, condition=None):
         areas.append(area_tiles)
     return areas
 
+# Creating sources in random places
+# More probability for creating sources in higher places
+# Minimal distance of 5 tiles between each two sources
 def create_sources(num_sources):
     size = max(Tile.objects.values_list('x', flat=True))
     sources = []
@@ -51,3 +54,12 @@ def create_sources(num_sources):
         if random.random() < Tile.objects.get(x=x_random, y=y_random).height:
             print(f"Source ({x_random}, {y_random})")
             num_sources -= 1
+
+def create_tribes(num_tribes):
+    size = max(Tile.objects.values_list('x', flat=True))
+    sources = []
+    while num_tribes:
+        x_random, y_random = random.randint(0, size), random.randint(0, size)
+        if Tile.objects.get(x=x_random, y=y_random).tile_type == "L" and random.random() < .5:
+            print(f"Tribe ({x_random}, {y_random})")
+            num_tribes -= 1
