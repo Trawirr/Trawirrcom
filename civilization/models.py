@@ -1,5 +1,5 @@
 from django.db import models
-from civilization.utils.civilization import *
+from civilization.utils.models_utils import *
 
 # Create your models here.
 class Civilization(models.Model):

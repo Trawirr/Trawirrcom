@@ -1,51 +1,8 @@
-import numpy as np
-from civilization.models import Tile, Area, Civilization
-
-WATER_COLORS = [
-    [-1.0, np.array([0,0,100])],
-    [-.5, np.array([0,0,120])],
-    [0, np.array([0,0,255])],
-    [1.0, np.array([0,150,255])]
-]
-
-LAND_COLORS = [
-    [0, np.array([0,255,0])],
-    [.3, np.array([255,255,0])],
-    [.4, np.array([255,70,0])],
-    [.8, np.array([0,0,0])],
-    [1.0, np.array([0,0,0])]
-]
-
-def decimal_hex(value):
-    digits = '0123456789ABCDEF'
-    r = digits[value//256]
-    value = value%256
-    g = digits[value//16]
-    b = digits[value%16]
-    return r+g+b
+from civilization.models import *
 
 def distance(x, y, size):
     return ((x - size/2)**2 + (y - size/2)**2)**.5/(size/2) 
     #return min(1, (size+size)/6/((size/2 - x)**2 + (size/2 - y)**2 + 1/64)**.5)
-
-def hex_color(value):
-    value = int(value)
-    digits = '0123456789ABCDEF'
-    return f"{digits[value//16]}{digits[value%16]}"
-
-def get_color(colors, height):
-    for i, (h, _) in enumerate(colors):
-        if h >= height:
-            (h1, color1), (h2, color2) = colors[i-1], colors[i]
-            break
-    result_color = color1 + (color2 - color1) * (height - h1) / (h2 - h1)
-    return ''.join([hex_color(value) for value in result_color])
-
-def get_land_color(height):
-    return get_color(LAND_COLORS, height)
-
-def get_water_color(height):
-    return get_color(WATER_COLORS, height)
 
 def get_tiles_by_height(condition, value):
     if condition == "higher":
@@ -54,8 +11,14 @@ def get_tiles_by_height(condition, value):
         return Tile.objects.filter(height__lte=value)
 
 def get_adjacent_tiles(x, y):
-    x = y = [-1, 1]
-    
+    coords = [(x-1,y), (x+1,y), (x,y-1), (x,y+1)]
+    adjacent_tiles = []
+    for new_x, new_y in coords:
+        try:
+            adjacent_tiles.append(Tile.objects.get(x=new_x, y=new_y))
+        except:
+            pass
+    return adjacent_tiles
 
 def get_separate_areas(condition, value):
     all_tiles = list(get_tiles_by_height(condition, value))
@@ -70,3 +33,5 @@ def get_separate_areas(condition, value):
                 area_tiles.append(tile)
                 for tile in get_adjacent_tiles(tile.x, tile.y):
                     to_visit.append(tile)
+        areas.append(area_tiles)
+    return areas
