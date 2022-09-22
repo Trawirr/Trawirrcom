@@ -21,4 +21,4 @@ class Command(BaseCommand):
         print("Generating tribes...")
         create_tribes(10)
 
-        print(create_rivers(5))
+        create_rivers(5)

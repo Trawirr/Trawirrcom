@@ -1,3 +1,4 @@
+from venv import create
 from civilization.models import *
 import random
 
@@ -59,7 +60,7 @@ def create_sources(num_sources):
     sources = []
     while num_sources:
         tile = Tile.objects.get(x=random.randint(0, size), y=random.randint(0, size))
-        if random.random() < tile.height and not list(filter(lambda t: abs(tile.x - t.x) + abs(tile.y - t.y) )):
+        if random.random() < tile.height and not list(filter(lambda t: abs(tile.x - t.x) + abs(tile.y - t.y) < 5, sources)):
             sources.append(tile)
             num_sources -= 1
     return sources
@@ -76,10 +77,29 @@ def create_rivers(num_sources):
            print(f"{len(river_tiles)}. ({tile.x}, {tile.y})")
            tile = get_lowest_adjacent_tile(tile.x, tile.y)
         rivers.append(river_tiles)
+        if tile: print(tile.tile_type)
+        
+        # Creating a lake
+        if not tile:
+            lake_tiles = create_lake(tile, river_tiles[-1].height)
+            print("Lake tiles:")
+            for i, t in enumerate(lake_tiles):
+                print(f"{i}. ({t.x}, {t.y})")
     return rivers
 
-def create_lake(x, y, height):
-    pass
+# TODO
+def create_lake(start_tile, height):
+    all_tiles = get_tiles_by_height("lower", height)
+    lake_tiles = []
+    to_visit = [start_tile]
+    while to_visit:
+        tile = to_visit.pop(0)
+        if tile in all_tiles:
+            all_tiles.remove(tile)
+            lake_tiles.append(tile)
+            for tile in get_adjacent_tiles(tile.x, tile.y):
+                to_visit.append(tile)
+    return lake_tiles
 
 def create_tribes(num_tribes):
     size = max(Tile.objects.values_list('x', flat=True))
