@@ -24,6 +24,14 @@ def get_adjacent_tiles(x, y):
             pass
     return adjacent_tiles
 
+def get_lowest_adjacent_tile(x, y):
+    adjacent_tiles = get_adjacent_tiles(x, y)
+    adjacent_tiles_sorted = sorted(adjacent_tiles, key=lambda t: t.height)
+    lowest_adjacent_tile = adjacent_tiles_sorted[0]
+    if lowest_adjacent_tile.height < Tile.objects.get(x=x, y=y).height:
+        return lowest_adjacent_tile
+    return None
+
 def get_separate_areas(mode, value, condition=None):
     if mode == "height":
         all_tiles = list(get_tiles_by_height(condition, value))
@@ -50,10 +58,28 @@ def create_sources(num_sources):
     size = max(Tile.objects.values_list('x', flat=True))
     sources = []
     while num_sources:
-        x_random, y_random = random.randint(0, size), random.randint(0, size)
-        if random.random() < Tile.objects.get(x=x_random, y=y_random).height:
-            print(f"Source ({x_random}, {y_random})")
+        tile = Tile.objects.get(x=random.randint(0, size), y=random.randint(0, size))
+        if random.random() < tile.height and not list(filter(lambda t: abs(tile.x - t.x) + abs(tile.y - t.y) )):
+            sources.append(tile)
             num_sources -= 1
+    return sources
+
+def create_rivers(num_sources):
+    sources = create_sources(num_sources)
+    print(f"Creating rivers... sources: {sources}")
+    rivers = []
+    for source in sources:
+        tile = source
+        river_tiles = []
+        while tile and tile.tile_type != 'W':
+           river_tiles.append(tile)
+           print(f"{len(river_tiles)}. ({tile.x}, {tile.y})")
+           tile = get_lowest_adjacent_tile(tile.x, tile.y)
+        rivers.append(river_tiles)
+    return rivers
+
+def create_lake(x, y, height):
+    pass
 
 def create_tribes(num_tribes):
     size = max(Tile.objects.values_list('x', flat=True))
