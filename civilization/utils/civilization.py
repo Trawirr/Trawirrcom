@@ -69,6 +69,7 @@ def create_rivers(num_sources):
     sources = create_sources(num_sources)
     print(f"Creating rivers... sources: {sources}")
     rivers = []
+    lakes = []
     for source in sources:
         tile = source
         river_tiles = []
@@ -77,28 +78,38 @@ def create_rivers(num_sources):
            print(f"{len(river_tiles)}. ({tile.x}, {tile.y})")
            tile = get_lowest_adjacent_tile(tile.x, tile.y)
         rivers.append(river_tiles)
-        if tile: print(tile.tile_type)
         
         # Creating a lake
         if not tile:
-            lake_tiles = create_lake(tile, river_tiles[-1].height)
-            print("Lake tiles:")
+            lake_tiles = create_lake(river_tiles[-1], river_tiles[-2].height)
+            lakes.append(lake_tiles)
+            print("\nLake tiles:")
             for i, t in enumerate(lake_tiles):
                 print(f"{i}. ({t.x}, {t.y})")
-    return rivers
+        print()
+    return rivers, lakes
 
 # TODO
-def create_lake(start_tile, height):
-    all_tiles = get_tiles_by_height("lower", height)
+# sprawdzić sąsiedztwo wody i height moze (tile(x,y).height + height)/2
+def create_lake(start_tile, height, max_size_constraints=(3,8)):
+    all_tiles = list(get_tiles_by_height("lower", height))
+    height = (start_tile.height + height) / 2
     lake_tiles = []
     to_visit = [start_tile]
-    while to_visit:
+    max_size = random.randint(max_size_constraints[0], max_size_constraints[1])
+    while to_visit and len(lake_tiles) < max_size:
         tile = to_visit.pop(0)
         if tile in all_tiles:
             all_tiles.remove(tile)
-            lake_tiles.append(tile)
-            for tile in get_adjacent_tiles(tile.x, tile.y):
-                to_visit.append(tile)
+            try:
+                if not list(filter(lambda t: t.tile_type == "W", get_adjacent_tiles(tile.x, tile.y))):
+                    lake_tiles.append(tile)
+                    for tile in get_adjacent_tiles(tile.x, tile.y):
+                        to_visit.append(tile)
+                else:
+                    print(f"({tile.x}, {tile.y}) adjacent to water, {len(to_visit)} tiles to check")
+            except Exception as e:
+                print(e)
     return lake_tiles
 
 def create_tribes(num_tribes):

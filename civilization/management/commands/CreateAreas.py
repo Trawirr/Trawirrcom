@@ -21,4 +21,15 @@ class Command(BaseCommand):
         print("Generating tribes...")
         create_tribes(10)
 
-        create_rivers(5)
+        rivers, lakes = create_rivers(5)
+        print(f"{len(rivers)} rivers, {len(lakes)} lakes")
+        x = input()
+        if x == 'ok':
+            for river in rivers:
+                for tile in river:
+                    tile.tile_type = 'W'
+                    tile.save()
+            for lake in lakes:
+                for tile in lake:
+                    tile.tile_type = 'W'
+                    tile.save()
