@@ -1,6 +1,7 @@
-from venv import create
 from civilization.models import *
 import random
+import os
+import re
 
 def distance(x, y, size):
     return ((x - size/2)**2 + (y - size/2)**2)**.5/(size/2) 
@@ -51,6 +52,27 @@ def get_separate_areas(mode, value, condition=None):
                     to_visit.append(tile)
         areas.append(area_tiles)
     return areas
+
+# Creating random area names
+def get_name_components(area_type):
+    path = 'static/names/'
+    all_files = os.listdir(path)
+    filtered_files = list(filter(lambda f: os.path.isfile(os.path.join(path, f)) and area_type in f, all_files))
+    components = []
+    for file in filtered_files:
+        with open(os.path.join(path, file), 'r') as f:
+            words = [word.strip() for word in f.readlines()]
+            components.append(words)
+    return components
+
+def generate_name(area_type):
+    components = get_name_components(area_type)
+    words = [random.choice(w) for w in components]
+    return ' '.join(words)
+
+def is_name_used(area_type, name):
+    names = Area.objects.filter(area_type=area_type).values_list('name', flat=True)
+    return name in names
 
 # Creating sources in random places
 # More probability for creating sources in higher places
