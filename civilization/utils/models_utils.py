@@ -10,8 +10,8 @@ WATER_COLORS = [
 
 LAND_COLORS = [
     [0, np.array([0,215,0])],
-    [.3, np.array([220,255,0])],
-    [.4, np.array([255,80,0])],
+    [.35, np.array([220,255,0])],
+    [.45, np.array([255,80,0])],
     [.8, np.array([0,0,0])],
     [1.0, np.array([0,0,0])]
 ]

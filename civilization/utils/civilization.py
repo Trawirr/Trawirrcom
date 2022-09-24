@@ -157,14 +157,14 @@ def create_areas(areas, threshold, type1, type2):
         if len(area) < threshold:
             new_area = Area(name=generate_name(type1), area_type=type1)
             new_area.save()
-            print(f"New area ({new_area.get_area_type_display()} {new_area.name}) created")
+            print(f"New area ({new_area.area_type} {new_area.name}) created")
             for tile in area:
                 tile.areas.add(new_area)
             print(f"{len(area)} tiles added")
         else:
             new_area = Area(name=generate_name(type2), area_type=type2)
             new_area.save()
-            print(f"New area ({new_area.get_area_type_display()} {new_area.name}) created")
+            print(f"New area ({new_area.area_type} {new_area.name}) created")
             for tile in area:
                 tile.areas.add(new_area)
             print(f"{len(area)} tiles added")
