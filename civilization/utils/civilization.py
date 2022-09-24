@@ -152,6 +152,41 @@ def create_land_areas():
                 tile.areas.add(new_area)
             print(f"{len(area)} tiles added")
 
+def create_areas(areas, threshold, type1, type2):
+    for area in areas:
+        if len(area) < threshold:
+            new_area = Area(name=generate_name(type1), area_type=type1)
+            new_area.save()
+            print(f"New area ({new_area.get_area_type_display()} {new_area.name}) created")
+            for tile in area:
+                tile.areas.add(new_area)
+            print(f"{len(area)} tiles added")
+        else:
+            new_area = Area(name=generate_name(type2), area_type=type2)
+            new_area.save()
+            print(f"New area ({new_area.get_area_type_display()} {new_area.name}) created")
+            for tile in area:
+                tile.areas.add(new_area)
+            print(f"{len(area)} tiles added")
+
+# def create_land_areas():
+#     areas = get_separate_areas('type', 'W')
+#     for area in areas:
+#         if len(area) < 120:
+#             new_area = Area(name=generate_name('L'), area_type='L')
+#             new_area.save()
+#             print(f"New area ({new_area.get_area_type_display()} {new_area.name}) created")
+#             for tile in area:
+#                 tile.areas.add(new_area)
+#             print(f"{len(area)} tiles added")
+#         else:
+#             new_area = Area(name=generate_name('S'), area_type='S')
+#             new_area.save()
+#             print(f"New area ({new_area.get_area_type_display()} {new_area.name}) created")
+#             for tile in area:
+#                 tile.areas.add(new_area)
+#             print(f"{len(area)} tiles added")
+
 def create_tribes(num_tribes):
     size = max(Tile.objects.values_list('x', flat=True))
     sources = []

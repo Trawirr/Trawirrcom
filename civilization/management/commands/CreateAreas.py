@@ -7,10 +7,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print('Generating land areas...')
-        create_land_areas()
+        land_areas = get_separate_areas('type', 'L')
+        create_areas(land_areas, 250, 'I', 'C')
 
         print('\nGenerating water areas...')
-        
+        water_areas = get_separate_areas('type', 'W')
+        create_areas(water_areas, 120, 'L', 'S')
+
+        print('\nGenerating mountain areas...')
+        mountain_areas = get_separate_areas('height', .4, 'higher')
+        create_areas(mountain_areas, 0, 'M', 'M')
         # print('Land > .0')
         # areas = get_separate_areas('height', .0, "higher")
         # for area in areas:
