@@ -11,6 +11,11 @@ class Command(BaseCommand):
         for area in areas:
             name = generate_name('I') if len(area) < 250 else generate_name('C')
             print(len(area), area[0].x, area[0].y, name)
+        print('Land > .0')
+        areas = get_separate_areas('height', .4, "higher")
+        for area in areas:
+            name = generate_name('I') if len(area) < 250 else generate_name('M')
+            print(len(area), area[0].x, area[0].y, name)
         print('\nWater')
         areas = get_separate_areas('type', 'W',)
         for area in areas:
