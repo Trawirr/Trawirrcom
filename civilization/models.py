@@ -6,7 +6,15 @@ class Civilization(models.Model):
     name = models.CharField(max_length=40)
 
 class Area(models.Model):
+    AREA_TYPE_CHOICES = [
+        ('C', 'Continent'),
+        ('I', 'Island'),
+        ('M', 'Mountain'),
+        ('S', 'Sea'),
+        ('L', 'Lake'),
+    ]
     name = models.CharField(max_length=40)
+    area_type = models.CharField(max_length=1, default='S')
 
 class Tile(models.Model):
     TILE_TYPE_CHOICES = [
@@ -16,7 +24,7 @@ class Tile(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     height = models.FloatField()
-    tile_type = models.CharField(max_length=1, default='L')
+    tile_type = models.CharField(max_length=1, default='L', choices=TILE_TYPE_CHOICES)
     owner = models.ForeignKey(Civilization, blank=True, null=True, related_name="tiles", on_delete=models.CASCADE)
     areas = models.ManyToManyField(Area, related_name="tiles")
 

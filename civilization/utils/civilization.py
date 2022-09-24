@@ -134,6 +134,24 @@ def create_lake(start_tile, height, max_size_constraints=(3,8)):
                 print(e)
     return lake_tiles
 
+def create_land_areas():
+    areas = get_separate_areas('type', 'L')
+    for area in areas:
+        if len(area) < 250:
+            new_area = Area(name=generate_name('I'), area_type='I')
+            new_area.save()
+            print(f"New area ({new_area.get_area_type_display()} {new_area.name}) created")
+            for tile in area:
+                tile.areas.add(new_area)
+            print(f"{len(area)} tiles added")
+        else:
+            new_area = Area(name=generate_name('C'), area_type='C')
+            new_area.save()
+            print(f"New area ({new_area.get_area_type_display()} {new_area.name}) created")
+            for tile in area:
+                tile.areas.add(new_area)
+            print(f"{len(area)} tiles added")
+
 def create_tribes(num_tribes):
     size = max(Tile.objects.values_list('x', flat=True))
     sources = []
