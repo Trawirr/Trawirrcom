@@ -41,8 +41,8 @@ class Tile(models.Model):
     y = models.IntegerField()
     height = models.FloatField()
     tile_type = models.CharField(max_length=1, default='L', choices=TILE_TYPE_CHOICES)
-    owner = models.ForeignKey(Civilization, blank=True, null=True, related_name="tiles", on_delete=models.CASCADE)
-    resource = models.ForeignKey(Resource, blank=True, null=True, related_name="tiles", on_delete=models.CASCADE)
+    owner = models.ForeignKey(Civilization, blank=True, null=True, related_name="tiles", on_delete=models.SET_NULL)
+    resource = models.ForeignKey(Resource, blank=True, null=True, related_name="tiles", on_delete=models.SET_NULL)
     areas = models.ManyToManyField(Area, related_name="tiles")
 
     class Meta:

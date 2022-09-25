@@ -193,10 +193,10 @@ def create_resources(num_resources):
         # production resource
         if resource_random.production > resource_random.food:
             #if random.random() < tile_random.height - (resource_random.production - resource_random.culture)/20:
-            if random.random() < tile_random.height * resource_random.production:
+            if random.random() < tile_random.height * resource_random.production + resource_random.culture/30:
                 print(f'    Resource created - {resource_random.name} on {tile_random.height_m}m')
                 num_resources -= 1
         #elif random.random() < 0.5 - tile_random.height - (resource_random.food - resource_random.culture)/20:
-        elif random.random() < (0.5 - tile_random.height) * resource_random.food:
+        elif random.random() < (0.25 - tile_random.height) * resource_random.food + resource_random.culture/30:
             print(f'    Resource created - {resource_random.name} on {tile_random.height_m}m')
             num_resources -= 1
