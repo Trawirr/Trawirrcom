@@ -6,17 +6,32 @@ class Command(BaseCommand):
     help = 'Creates new Areas'
 
     def handle(self, *args, **options):
-        print('Generating land areas...')
-        land_areas = get_separate_areas('type', 'L')
-        create_areas(land_areas, 250, 'I', 'C')
+        # print('Generating land areas...')
+        # land_areas = get_separate_areas('type', 'L')
+        # create_areas(land_areas, 250, 'I', 'C')
 
-        print('\nGenerating water areas...')
-        water_areas = get_separate_areas('type', 'W')
-        create_areas(water_areas, 120, 'L', 'S')
+        # print('\nGenerating water areas...')
+        # water_areas = get_separate_areas('type', 'W')
+        # create_areas(water_areas, 120, 'L', 'S')
 
-        print('\nGenerating mountain areas...')
-        mountain_areas = get_separate_areas('height', .4, 'higher')
-        create_areas(mountain_areas, 0, 'M', 'M')
+        # print('\nGenerating mountain areas...')
+        # mountain_areas = get_separate_areas('height', .4, 'higher')
+        # create_areas(mountain_areas, 0, 'M', 'M')
+
+        print('Generating rivers and lakes...')
+        rivers, lakes = create_rivers(5)
+        print(f"{len(rivers)} rivers, {len(lakes)} lakes")
+        x = input()
+        if x == 'ok':
+            for river in rivers:
+                for tile in river:
+                    tile.tile_type = 'W'
+                    tile.save()
+            for lake in lakes:
+                for tile in lake:
+                    tile.tile_type = 'W'
+                    tile.save()
+
         # print('Land > .0')
         # areas = get_separate_areas('height', .0, "higher")
         # for area in areas:

@@ -90,6 +90,8 @@ def create_sources(num_sources):
             num_sources -= 1
     return sources
 
+# TODO
+# tworzenie rzek jako Area
 def create_rivers(num_sources):
     sources = create_sources(num_sources)
     print(f"Creating rivers... sources: {sources}")
@@ -114,8 +116,6 @@ def create_rivers(num_sources):
         print()
     return rivers, lakes
 
-# TODO
-# sprawdzić sąsiedztwo wody i height moze (tile(x,y).height + height)/2
 def create_lake(start_tile, height, max_size_constraints=(3,8)):
     all_tiles = list(get_tiles_by_height("lower", height))
     height = (start_tile.height + height) / 2

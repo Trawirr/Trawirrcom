@@ -4,8 +4,7 @@ WATER_COLORS = [
     [-1.0, np.array([0,0,100])],
     [-.5, np.array([0,0,120])],
     [0, np.array([0,0,255])],
-    [.3, np.array([0,150,255])],
-    [1.0, np.array([0,150,255])]
+    [1.0, np.array([0,0,255])]
 ]
 
 LAND_COLORS = [

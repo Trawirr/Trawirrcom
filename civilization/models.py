@@ -12,6 +12,7 @@ class Area(models.Model):
         ('M', 'Mountain'),
         ('S', 'Sea'),
         ('L', 'Lake'),
+        ('R', 'River'),
     ]
     name = models.CharField(max_length=40)
     area_type = models.CharField(max_length=1, default='S', choices=AREA_TYPE_CHOICES)
@@ -67,11 +68,26 @@ class Tile(models.Model):
                 is_adjacent.append(True)
         return is_adjacent
 
+    # left, right, top, bottom
+    def is_adjacent_to_area_type(self, area_type):
+        x, y = self.x, self.y
+        coords = [(x-1,y), (x+1,y), (x,y-1), (x,y+1)]
+        is_adjacent = []
+        for x, y in coords:
+            try:
+                tile = Tile.objects.get(x=x, y=y)
+                if tile.areas.filter(area_type=area_type):
+                    is_adjacent.append(True)
+                else:
+                    is_adjacent.append(False)
+            except:
+                is_adjacent.append(True)
+        return is_adjacent
+
+    # Border style for rivers
     def get_border_style(self):
         border_style = ""
-        if self.tile_type == 'L':
-            return border_style
-        else:
+        if self.is_area_type('R'):
             adjacent_dict = {
                 0: 'left',
                 1: 'right',
@@ -81,8 +97,8 @@ class Tile(models.Model):
             is_adjacent = self.is_adjacent_to_tile_type('L')
             for i, adjacent_bool in enumerate(is_adjacent):
                 if adjacent_bool:
-                    border_style += f"border-{adjacent_dict[i]}: 3px solid #DADF47; "
-            return border_style
+                    border_style += f"border-{adjacent_dict[i]}: 2px solid #{get_land_color(self.height)}; "
+        return border_style
 
     def get_title_description(self):
         description = f"({ self.x }, { self.y }) { self.tile_type } &#010; { self.height_m }m "
