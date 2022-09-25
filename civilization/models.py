@@ -2,10 +2,22 @@ from django.db import models
 from civilization.utils.models_utils import *
 
 # Create your models here.
+class Resource(models.Model):
+    name = models.CharField(max_length=20)
+    food = models.IntegerField()
+    production = models.IntegerField()
+    culture = models.IntegerField()
+
+    def __str__(self) -> str:
+        return f"{self.name} +{self.food} Food, +{self.production} Production, +{self.culture} Culture"
+
 class Civilization(models.Model):
     name = models.CharField(max_length=40)
 
 class Area(models.Model):
+    class Meta:
+        ordering = ['area_type', 'name']
+
     AREA_TYPE_CHOICES = [
         ('C', 'Continent'),
         ('I', 'Island'),
@@ -102,8 +114,8 @@ class Tile(models.Model):
 
     def get_title_description(self):
         description = f"({ self.x }, { self.y }) { self.tile_type } &#010; { self.height_m }m "
-        # for area in self.areas.all():
-        #     description += f" &#010; {area.name} ({area.get_area_type_display()})"
+        for area in self.areas.all():
+            description += f" &#010; {area.name} ({area.get_area_type_display()})"
         return description
 
     def __str__(self) -> str:
