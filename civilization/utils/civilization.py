@@ -67,8 +67,11 @@ def get_name_components(area_type):
 
 def generate_name(area_type):
     components = get_name_components(area_type)
-    words = [random.choice(w) for w in components]
-    return ' '.join(words)
+    while True:
+        words = [random.choice(w) for w in components]
+        name = ' '.join(words)
+        if not is_name_used(name):
+            return name
 
 def is_name_used(area_type, name):
     names = Area.objects.filter(area_type=area_type).values_list('name', flat=True)

@@ -14,7 +14,10 @@ class Area(models.Model):
         ('L', 'Lake'),
     ]
     name = models.CharField(max_length=40)
-    area_type = models.CharField(max_length=1, default='S')
+    area_type = models.CharField(max_length=1, default='S', choices=AREA_TYPE_CHOICES)
+
+    def __str__(self) -> str:
+        return f"{self.get_area_type_display()} {self.name}"
 
 class Tile(models.Model):
     TILE_TYPE_CHOICES = [
