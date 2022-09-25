@@ -70,7 +70,7 @@ def generate_name(area_type):
     while True:
         words = [random.choice(w) for w in components]
         name = ' '.join(words)
-        if not is_name_used(name):
+        if not is_name_used(area_type, name):
             return name
 
 def is_name_used(area_type, name):

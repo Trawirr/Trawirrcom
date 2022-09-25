@@ -86,8 +86,8 @@ class Tile(models.Model):
 
     def get_title_description(self):
         description = f"({ self.x }, { self.y }) { self.tile_type } &#010; { self.height_m }m "
-        for area in self.areas.all():
-            description += f" &#010; {area.name}"
+        # for area in self.areas.all():
+        #     description += f" &#010; {area.name} ({area.get_area_type_display()})"
         return description
 
     def __str__(self) -> str:
