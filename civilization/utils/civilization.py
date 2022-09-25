@@ -1,3 +1,4 @@
+from unicodedata import numeric
 from civilization.models import *
 import random
 import os
@@ -172,24 +173,6 @@ def create_areas(areas, threshold, type1, type2):
                 tile.areas.add(new_area)
             print(f"{len(area)} tiles added")
 
-# def create_land_areas():
-#     areas = get_separate_areas('type', 'W')
-#     for area in areas:
-#         if len(area) < 120:
-#             new_area = Area(name=generate_name('L'), area_type='L')
-#             new_area.save()
-#             print(f"New area ({new_area.get_area_type_display()} {new_area.name}) created")
-#             for tile in area:
-#                 tile.areas.add(new_area)
-#             print(f"{len(area)} tiles added")
-#         else:
-#             new_area = Area(name=generate_name('S'), area_type='S')
-#             new_area.save()
-#             print(f"New area ({new_area.get_area_type_display()} {new_area.name}) created")
-#             for tile in area:
-#                 tile.areas.add(new_area)
-#             print(f"{len(area)} tiles added")
-
 def create_tribes(num_tribes):
     size = max(Tile.objects.values_list('x', flat=True))
     sources = []
@@ -198,3 +181,22 @@ def create_tribes(num_tribes):
         if Tile.objects.get(x=x_random, y=y_random).tile_type == "L" and random.random() < .5:
             print(f"Tribe ({x_random}, {y_random})")
             num_tribes -= 1
+
+# Creating resources
+def create_resources(num_resources):
+    all_tiles = Tile.objects.filter(tile_type='L')
+    all_resources = Resource.objects.all()
+    while num_resources:
+        resource_random = random.choice(all_resources)
+        tile_random = random.choice(all_tiles)
+        #print(f"{tile_random.height} height, {resource_random.production} production, {resource_random.food} food")
+        # production resource
+        if resource_random.production > resource_random.food:
+            #if random.random() < tile_random.height - (resource_random.production - resource_random.culture)/20:
+            if random.random() < tile_random.height * resource_random.production:
+                print(f'    Resource created - {resource_random.name} on {tile_random.height_m}m')
+                num_resources -= 1
+        #elif random.random() < 0.5 - tile_random.height - (resource_random.food - resource_random.culture)/20:
+        elif random.random() < (0.5 - tile_random.height) * resource_random.food:
+            print(f'    Resource created - {resource_random.name} on {tile_random.height_m}m')
+            num_resources -= 1
