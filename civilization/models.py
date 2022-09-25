@@ -81,5 +81,11 @@ class Tile(models.Model):
                     border_style += f"border-{adjacent_dict[i]}: 3px solid #DADF47; "
             return border_style
 
+    def get_title_description(self):
+        description = f"({ self.x }, { self.y }) { self.tile_type } &#010; { self.height_m }m "
+        for area in self.areas.all():
+            description += f" &#010; {area.name}"
+        return description
+
     def __str__(self) -> str:
         return f"({self.x}, {self.y}), type {self.tile_type}, {self.height_m}m, color {self.color}"
