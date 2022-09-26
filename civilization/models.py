@@ -3,6 +3,8 @@ from civilization.utils.models_utils import *
 
 # Create your models here.
 class Resource(models.Model):
+    class Meta:
+        ordering = ['food', 'production', 'culture']
     name = models.CharField(max_length=20)
     food = models.IntegerField()
     production = models.IntegerField()

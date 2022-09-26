@@ -7,4 +7,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print('Creating resources...')
-        create_resources(20)
+        create_resources(50)

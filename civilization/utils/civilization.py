@@ -186,6 +186,7 @@ def create_tribes(num_tribes):
 def create_resources(num_resources):
     all_tiles = Tile.objects.filter(tile_type='L')
     all_resources = Resource.objects.all()
+    resources = []
     while num_resources:
         resource_random = random.choice(all_resources)
         tile_random = random.choice(all_tiles)
@@ -196,7 +197,16 @@ def create_resources(num_resources):
             if random.random() < tile_random.height * resource_random.production + resource_random.culture/30:
                 print(f'    Resource created - {resource_random.name} on {tile_random.height_m}m')
                 num_resources -= 1
+                resources.append((tile_random, resource_random))
         #elif random.random() < 0.5 - tile_random.height - (resource_random.food - resource_random.culture)/20:
         elif random.random() < (0.25 - tile_random.height) * resource_random.food + resource_random.culture/30:
             print(f'    Resource created - {resource_random.name} on {tile_random.height_m}m')
             num_resources -= 1
+            resources.append((tile_random, resource_random))
+    for r in Resource.objects.values_list('name', flat=True):
+        print(f"{r}: {[r.name for _, r in resources].count(r)}")
+    decision = input('resources ok?')
+    if decision == 'ok':
+        for tile, resource in resources:
+            tile.resource = resource
+            tile.save()
