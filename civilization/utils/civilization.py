@@ -27,6 +27,16 @@ def get_adjacent_tiles(x, y):
             pass
     return adjacent_tiles
 
+def get_all_adjacent_tiles(x, y):
+    coords = [(x+dx, y+dy) for dx in [-1, 0, 1] for dy in [-1, 0, 1]]
+    adjacent_tiles = []
+    for new_x, new_y in coords:
+        try:
+            adjacent_tiles.append(Tile.objects.get(x=new_x, y=new_y))
+        except:
+            pass
+    return adjacent_tiles
+
 def get_lowest_adjacent_tile(x, y):
     adjacent_tiles = get_adjacent_tiles(x, y)
     adjacent_tiles_sorted = sorted(adjacent_tiles, key=lambda t: t.height)
@@ -35,7 +45,7 @@ def get_lowest_adjacent_tile(x, y):
         return lowest_adjacent_tile
     return None
 
-def get_separate_areas(mode, value, condition=None):
+def get_separate_areas(mode, value, condition=None, adjacency="simple"):
     if mode == "height":
         all_tiles = list(get_tiles_by_height(condition, value))
     elif mode == "type":
@@ -49,7 +59,11 @@ def get_separate_areas(mode, value, condition=None):
             if tile in all_tiles:
                 all_tiles.remove(tile)
                 area_tiles.append(tile)
-                for tile in get_adjacent_tiles(tile.x, tile.y):
+                if adjacency == "simple":
+                    adjacent_tiles = get_adjacent_tiles(tile.x, tile.y)
+                elif adjacency == "full":
+                    adjacent_tiles = get_all_adjacent_tiles(tile.x, tile.y)
+                for tile in adjacent_tiles:
                     to_visit.append(tile)
         areas.append(area_tiles)
     return areas
@@ -139,7 +153,7 @@ def create_lake(start_tile, height, max_size_constraints=(3,8)):
     return lake_tiles
 
 def create_land_areas():
-    areas = get_separate_areas('type', 'L')
+    areas = get_separate_areas('type', 'L', adjacency="full")
     for area in areas:
         if len(area) < 250:
             new_area = Area(name=generate_name('I'), area_type='I')

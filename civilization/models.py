@@ -57,6 +57,7 @@ class Tile(models.Model):
 
     @property
     def color(self):
+        if self.resource: return "000"
         if self.tile_type == 'L':
             return get_land_color(self.height)
         else:
@@ -117,6 +118,8 @@ class Tile(models.Model):
 
     def get_title_description(self):
         description = f"({ self.x }, { self.y }) { self.tile_type } &#010; { self.height_m }m "
+        if self.resource:
+            description += f" &#010; {self.resource.name}"
         for area in self.areas.all():
             description += f" &#010; {area.name} ({area.get_area_type_display()})"
         return description
