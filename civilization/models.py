@@ -57,7 +57,7 @@ class Tile(models.Model):
 
     @property
     def color(self):
-        if self.resource: return "000"
+        #if self.resource: return "000"
         if self.tile_type == 'L':
             return get_land_color(self.height)
         else:
@@ -115,6 +115,11 @@ class Tile(models.Model):
                 if adjacent_bool:
                     border_style += f"border-{adjacent_dict[i]}: 2px solid #{get_land_color(self.height)}; "
         return border_style
+
+    def get_resource_border_style(self):
+        if self.resource:
+            return "border: 1px solid black"
+        return ""
 
     def get_title_description(self):
         description = f"({ self.x }, { self.y }) { self.tile_type } &#010; { self.height_m }m "
