@@ -4,14 +4,15 @@ import random
 
 def get_tribe_color():
     r, g, b = 0, 0, 0
-    while r+g+b < 300:
+    while r+g+b < 300 and check_color_correct((r, g, b)):
         r, g, b = (random.randint(0, 255) for i in range(3))
     return ''.join([hex_color(c) for c in (r, g, b)])
 
 def check_color_correct(color):
     colors = list(Civilization.objects.values_list('color', flat=True))
     for other_color in colors:
-        diff_color = [abs(color[i] - other_color[i]) for i in range(3)]
+        other_color_values = hex_value(other_color)
+        diff_color = [abs(color[i] - other_color_values[i]) for i in range(3)]
 
 def create_tribes(num_tribes):
     size = max(Tile.objects.values_list('x', flat=True))
