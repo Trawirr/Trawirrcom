@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from perlin_noise import PerlinNoise
 
 from civilization.models import *
-from civilization.utils.civilization import *
+from civilization.utils.map import *
 
 class Command(BaseCommand):
     help = 'Creates a new map with new Tiles, Areas and Civilizations'
