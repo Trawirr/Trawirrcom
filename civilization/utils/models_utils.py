@@ -1,3 +1,4 @@
+from sre_parse import HEXDIGITS
 import numpy as np
 
 WATER_COLORS = [
@@ -14,6 +15,27 @@ LAND_COLORS = [
     [.8, np.array([0,0,0])],
     [1.0, np.array([0,0,0])]
 ]
+
+HEX_DIGITS = '0123456789ABCDEF'
+
+def convert_dec2hex(value):
+    hex_value = ""
+    while value:
+        hex_value = HEX_DIGITS[value%16]
+        value = value // 16
+    return hex_value
+
+def convert_hex2dec(value):
+    dec_value = 0
+    for hex_digit in value:
+        dec_value = dec_value * 16 + HEX_DIGITS.index(hex_digit)
+    return dec_value
+
+def split_rgb(color):
+    if len(color) == 6:
+        return [color[2*i:2*(i+1)] for i in range(3)]
+    else:
+        return [c for c in color]
 
 def decimal_hex(value):
     digits = '0123456789ABCDEF'

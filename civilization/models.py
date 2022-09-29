@@ -15,6 +15,10 @@ class Resource(models.Model):
 
 class Civilization(models.Model):
     name = models.CharField(max_length=40)
+    color = models.CharField(max_length=6, default="FFFFFF")
+
+    def __str__(self) -> str:
+        return f"{self.name}"
 
 class Area(models.Model):
     class Meta:
@@ -60,6 +64,16 @@ class Tile(models.Model):
         #if self.resource: return "000"
         if self.tile_type == 'L':
             return get_land_color(self.height)
+        else:
+            return get_water_color(self.height)
+
+    @property
+    def political_color(self):
+        if self.tile_type == 'L':
+            if self.owner:
+                return self.owner.color
+            else:
+                return "FFFFFF"
         else:
             return get_water_color(self.height)
 
@@ -127,6 +141,8 @@ class Tile(models.Model):
             description += f" &#010; {self.resource.name}"
         for area in self.areas.all():
             description += f" &#010; {area.name} ({area.get_area_type_display()})"
+        if self.owner:
+            description += f" &#010; {self.owner.name}"
         return description
 
     def __str__(self) -> str:

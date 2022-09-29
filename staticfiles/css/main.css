@@ -14,7 +14,7 @@ html, body {
     font-size: 24px;
     color: black;
     padding: 10px;
-    padding-top: 75px;
+    padding-top: 70px;
     border: solid black 1px;
 }
 
@@ -191,8 +191,10 @@ div.gallery {
     text-align: center;
 }
   
-  * {
+* {
     box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 
 .project{
@@ -206,4 +208,30 @@ div.gallery {
     float: left;
     height: 300px;
     width: 49.99999%;
+}
+
+/* Civilization map style */
+h1 {
+    margin: 0;
+}
+
+.map-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* .map-table{
+
+} */
+
+td, th {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+}
+
+table{
+    border: 2px solid black;
+    border-spacing: 0;
 }

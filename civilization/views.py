@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import *
 
-def index(request):
+def index(request, map_mode):
     template = loader.get_template('civilization.html')
 
     tiles = Tile.objects.all()
@@ -10,5 +10,6 @@ def index(request):
 
     context = {
         'tiles': tiles,
+        'mode': map_mode,
     }
     return HttpResponse(template.render(context, request))
