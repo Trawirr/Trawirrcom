@@ -77,6 +77,13 @@ class Tile(models.Model):
         else:
             return get_water_color(self.height)
 
+    @property
+    def geopolitical_color(self):
+        if self.owner:
+            return self.political_color
+        else:
+            return self.color
+
     def is_area_type(self, area_type):
         if self.areas.filter(area_type=area_type):
             return True
