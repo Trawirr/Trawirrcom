@@ -8,7 +8,15 @@
         {% for row in tiles %}
             <tr>
                 {% for tile in row %}
-                    <td style="background-color: #{% if mode == 'geo' %}{{ tile.color }}{% elif mode == 'geopolitical' %}{{ tile.geopolicital_color }}{% else %}{{ tile.political_color }}{% endif %};}" data-x="{{ tile.x }}" data-y="{{ tile.y }}" title="{{ tile.get_title_description |safe }}"></td>
+                    <td style="background-color: 
+                    {% if mode == 'geo' %}
+                        #{{ tile.color }}
+                    {% elif mode == 'geopolitical' %}
+                        #{{ tile.geopolitical_color }}
+                    {% else %}
+                        #{{ tile.political_color }}
+                    {% endif %};" 
+                    data-x="{{ tile.x }}" data-y="{{ tile.y }}" title="{{ tile.get_title_description |safe }}"></td>
                 {% endfor %}
             </tr>
         {% endfor %}
