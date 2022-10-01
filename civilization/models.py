@@ -17,6 +17,13 @@ class Civilization(models.Model):
     name = models.CharField(max_length=40)
     color = models.CharField(max_length=6, default="FFFFFF")
 
+    food = models.IntegerField(default=0)
+    food_level = models.IntegerField(default=0)
+    production = models.IntegerField(default=0)
+    production_level = models.IntegerField(default=0)
+    culture = models.IntegerField(default=0)
+    culture_level = models.IntegerField(default=0)
+
     def __str__(self) -> str:
         return f"{self.name}"
 
