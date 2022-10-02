@@ -27,6 +27,12 @@ class Civilization(models.Model):
     def __str__(self) -> str:
         return f"{self.name}"
 
+    def get_inner_border(self):
+        pass
+    
+    def get_outer_border(self):
+        pass
+
 class Area(models.Model):
     class Meta:
         ordering = ['area_type', 'name']
