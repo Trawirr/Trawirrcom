@@ -124,7 +124,7 @@ STATICFILES_DIRS = [
 ]
 
 # Place to store static files in production
-STATIC_ROOT = BASE_DIR / 'local-cdn' / 'static'
+STATIC_ROOT = BASE_DIR.parent / 'local-cdn' / 'static'
 
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage" 
 
