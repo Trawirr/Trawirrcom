@@ -9,7 +9,7 @@
     {% include 'head/css.html' %}
 </head>
 
-<body>
+<body {% block body %}{% endblock %}>
     <div>
         {% block content %}
         {% endblock %}
