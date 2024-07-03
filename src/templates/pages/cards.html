@@ -1,0 +1,8 @@
+<div id="cards-container" class="flex flex-row justify-center items-center w-screen">
+    {% for card in cards %}
+    <div id="card-{{ forloop.counter }}" class="w-1/4 h-1/4 m-4 rounded-md bg-gradient-to-r from-purple-600 via-sky-500 to-black text-center items-center relative transition-skew duration-300 transform skew-y-12 hover:skew-y-0">
+        <img src="media/{{ card.jpg }}" alt="{{ card.name }}-jpg" class="p-2 w-full h-full object-fill rounded-md">
+        <img src="media/{{ card.gif }}" alt="{{ card.name }}-gif" class="p-2 w-full h-full object-fill rounded-md absolute top-0 left-0 opacity-0 transition-opacity duration-300 transform hover:opacity-100">
+    </div>
+    {% endfor %}
+</div>

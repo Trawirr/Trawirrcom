@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block body %} class="bg-gradient-to-br from-purple-600 via-sky-500 to-black h-screen flex justify-center items-center" {% endblock %}
 
 {% block content %}
 
-<div id="main" class="bg-gradient-to-br from-gray-700 via-sky-500 to-gray-900 h-screen flex justify-center items-center">
-    <h1>some header</h1>
-</div>
+<div hx-get={% url 'cards' %} hx-trigger="load" hx-target="this" hx-swap="outerHTML"></div>
 
 {% endblock %}
