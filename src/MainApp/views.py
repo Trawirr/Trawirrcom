@@ -9,8 +9,8 @@ def cards_view(request):
     cards = Card.objects.all()
     cards_count = cards.count()
     pages_available = 1 + cards_count - 3
-    page_prev = (page - 1) % pages_available
-    page_next = (page + 1) % pages_available
+    page_prev = (page - 1) % cards_count
+    page_next = (page + 1) % cards_count
 
     cards_selected = [cards[(page + i) % cards_count] for i in range(3)]
 
