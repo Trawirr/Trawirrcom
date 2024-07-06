@@ -4,7 +4,7 @@
         <path d="M23 28 L14 20 L23 12" fill="none" />
       </svg>
 
-    {% for card in cards %}
+    {% for card in cards_selected %}
     <div id="card-{{ forloop.counter }}" class="aspect-video  w-1/4 h-1/4 m-4 rounded-md bg-gradient-to-br from-trawirr-yellow to-trawirr-white text-center items-center relative transition-skew transition-scale duration-300 transform skew-y-12 hover:skew-y-0 scale-x-75 hover:scale-x-100 shadow-lg shadow-black">
         <img src="media/{{ card.jpg }}" alt="{{ card.name }}-jpg" class="p-2 w-full h-full object-fill rounded-md">
         <img src="media/{{ card.gif }}" alt="{{ card.name }}-gif" class="p-2 w-full h-full object-fill rounded-md absolute top-0 left-0 opacity-0 transition-opacity duration-200 transform hover:opacity-100">
