@@ -22,3 +22,6 @@ def cards_view(request):
     }
     print(f"{context=}")
     return render(request, "pages/cards.html", context)
+
+def about_me_view(request):
+    return render(request, "pages/about_me.html", {})
