@@ -5,17 +5,19 @@
 
 {% block content %} 
 
+<!-- Menu -->
 <div class='flex justify-center w-screen'>
     <div id="top-menu" class='flex w-3/4 h-16 absolute top-0 transform m-4 p-1 rounded-full bg-trawirr-yellow shadow-lg shadow-black'>
-        <a class="w-1/2 h-full rounded-l-full flex text-center items-center justify-center text-xl hover:bg-trawirr-dark-yellow hover:shadow-inner hover:shadow-black">
+        <a href={% url 'home' %} class="w-1/2 h-full rounded-l-full flex text-center items-center justify-center text-xl hover:bg-trawirr-dark-yellow hover:shadow-inner hover:shadow-black">
             Something
         </a>
-        <a class="w-1/2 h-full rounded-r-full flex text-center items-center justify-center text-xl hover:bg-trawirr-dark-yellow hover:shadow-inner hover:shadow-black">
+        <a href={% url 'about-me' %} class="w-1/2 h-full rounded-r-full flex text-center items-center justify-center text-xl hover:bg-trawirr-dark-yellow hover:shadow-inner hover:shadow-black">
             About me
         </a>
     </div>
 </div>
 
+<!-- Cards -->
 <div hx-get={% url 'cards' %} hx-trigger="load" hx-target="this" hx-swap="outerHTML"></div>
 
 {% endblock %}
