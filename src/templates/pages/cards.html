@@ -1,5 +1,5 @@
 <div id="cards-container" class="flex flex-row justify-center items-center w-screen">
-    <svg class="h-10 w-10 flex-none fill-trawirr-yellow stroke-trawirr-gray-100 stroke-[4px] cursor-pointer"
+    <svg class="h-10 w-10 flex-none fill-trawirr-green-300 stroke-trawirr-gray-100 stroke-[4px] cursor-pointer"
      stroke-linecap="round" stroke-linejoin="round"
      hx-trigger="click" hx-get="/cards?page={{ page_prev }}" hx-target="#cards-container" hx-swap="outerHTML">
         <circle cx="20" cy="20" r="18" />
@@ -7,13 +7,13 @@
       </svg>
 
     {% for card in cards_selected %}
-    <div id="card-{{ forloop.counter }}" class="aspect-video  w-1/4 h-1/4 m-2 rounded-md bg-gradient-to-br from-trawirr-yellow to-trawirr-white text-center items-center relative htmx-swapping:opacity-0 transition-skew transition-scale duration-300 transform skew-y-12 hover:skew-y-0 scale-x-75 hover:scale-x-100 shadow-lg shadow-black">
-        <img src="media/{{ card.jpg }}" alt="{{ card.name }}-jpg" class="lg:p-2 w-full h-full object-fill rounded-md">
-        <img src="media/{{ card.gif }}" alt="{{ card.name }}-gif" class="lg:p-2 w-full h-full object-fill rounded-md absolute top-0 left-0 opacity-0 transition-opacity duration-200 transform hover:opacity-100">
+    <div id="card-{{ forloop.counter }}" class="aspect-video  w-1/4 h-1/4 m-2 rounded-md bg-gradient-to-br from-trawirr-green-200 to-trawirr-green-400 text-center items-center relative htmx-swapping:opacity-0 transition-skew transition-scale duration-300 transform skew-y-12 hover:skew-y-0 scale-x-75 hover:scale-x-100 shadow-lg shadow-black">
+        <img src="media/{{ card.jpg }}" alt="{{ card.name }}-jpg" class="lg:p-2 w-full h-full object-fill rounded-xl">
+        <img src="media/{{ card.gif }}" alt="{{ card.name }}-gif" class="lg:p-2 w-full h-full object-fill rounded-xl absolute top-0 left-0 opacity-0 transition-opacity duration-200 transform hover:opacity-100">
     </div>
     {% endfor %}
 
-    <svg class="h-10 w-10 flex-none fill-trawirr-yellow stroke-trawirr-gray-100 stroke-[4px] cursor-pointer"
+    <svg class="h-10 w-10 flex-none fill-trawirr-green-300 stroke-trawirr-gray-100 stroke-[4px] cursor-pointer"
      stroke-linecap="round" stroke-linejoin="round"
      hx-trigger="click" hx-get="/cards?page={{ page_next }}" hx-target="#cards-container" hx-swap="outerHTML">
         <circle cx="20" cy="20" r="18" />
