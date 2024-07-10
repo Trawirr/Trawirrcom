@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block body %} class="bg-trawirr-green-100 h-screen flex justify-center items-center" {% endblock %}
+{% block body %} class="bg-trawirr-green-100 h-screen flex justify-center items-center font-mono" {% endblock %}
 
 {% block content %} 
 
 <!-- Menu -->
-<div class='flex justify-center w-screen text-gray-200'>
+<div class='flex justify-center w-screen text-gray-200 text-2xl tracking-widest'>
     <div id="top-menu" class='flex w-3/4 h-16 absolute top-0 transform m-4 p-1 rounded-full bg-trawirr-green-200 shadow-lg shadow-black'>
-        <a href={% url 'home' %} class="w-1/2 h-full rounded-l-full flex text-center items-center justify-center text-xl hover:bg-trawirr-green-300 hover:shadow-inner">
+        <a href={% url 'home' %} class="w-1/2 h-full rounded-l-full flex text-center items-center justify-center hover:bg-trawirr-green-300 hover:shadow-inner">
             Projects
         </a>
-        <a href={% url 'about-me' %} class="w-1/2 h-full rounded-r-full flex text-center items-center justify-center text-xl hover:bg-trawirr-green-300 hover:shadow-inner">
+        <a href={% url 'about-me' %} class="w-1/2 h-full rounded-r-full flex text-center items-center justify-center hover:bg-trawirr-green-300 hover:shadow-inner">
             About me
         </a>
     </div>
