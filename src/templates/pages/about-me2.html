@@ -1,0 +1,356 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %} class="bg-trawirr-gray-100 h-screen flex justify-center font-mono" {% endblock %}
+
+{% block content %}
+
+<div class="w-screen flex flex-col items-center">
+    <!-- Menu -->
+    <div id="top-menu" class="flex w-3/4 h-16 m-4 p-1 rounded-full bg-trawirr-yellow shadow-lg shadow-black">
+        <a href={% url 'home' %} class="w-1/2 h-full rounded-l-full flex text-center items-center justify-center text-xl hover:bg-trawirr-dark-yellow hover:shadow-inner hover:shadow-black">
+            Something
+        </a>
+        <a href={% url 'about-me' %} class="w-1/2 h-full rounded-r-full flex text-center items-center justify-center text-xl hover:bg-trawirr-dark-yellow hover:shadow-inner hover:shadow-black">
+            About me
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="w-2/3 rounded-2xl bg-trawirr-gray-200 mt-8 p-4">
+        <!-- Main content goes here -->
+
+        <!-- Timeline -->
+        <div class="ps-2 my-2 first:mt-0">
+            <h3 class="text-lg font-medium uppercase text-gray-500 dark-text-neutral-400">
+                Before
+            </h3>
+        </div>
+
+        <!-- Item -->
+        <div class="flex gap-x-3">
+            <!-- Icon -->
+            <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+                <div class="relative z-10 size-7 flex justify-center items-center">
+                    <div class="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>
+                </div>
+            </div>
+            <!-- End Icon -->
+
+            <!-- Right Content -->
+            <div class="grow pt-0.5 pb-8">
+                <h3 class="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+                    III Liceum Ogólnokształcące im. Jana Pawła II (2014-2017)
+                </h3>
+                <p class="mt-1 text-sm text-gray-600 dark:text-neutral-400">
+                    <ul class="ml-3 list-disc">
+                        <li>Medalist for academic results</li>
+                        <li>Laureate of Gdańsk University of Technology competition "Wygraj Indeks"</li>
+                        <li>Third Place in mathematical contest of Elbląg PWSZ</li>
+                        <li>Prime Minister's Scholarship for the best student</li>
+                    </ul>
+                </p>
+            </div>
+            
+            <!-- End Right Content -->
+        </div>
+        <!-- End Item -->
+
+        <!-- Item -->
+        <div class="flex gap-x-3">
+            <!-- Icon -->
+            <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+                <div class="relative z-10 size-7 flex justify-center items-center">
+                    <div class="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>
+                </div>
+            </div>
+            <!-- End Icon -->
+
+            <!-- Right Content -->
+            <div class="grow pt-0.5 pb-8">
+                <h3 class="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+                    Rypin history project
+                </h3>
+                <p class="mt-1 text-sm text-gray-600 dark:text-neutral-400">
+                    Technical support for Rypin history project carried out as part of the "Kultura w Sieci" project, organized by the Polish Ministry of Culture
+                </p>
+            </div>
+            
+            <!-- End Right Content -->
+        </div>
+        <!-- End Item -->
+
+        <!-- Item -->
+        <div class="flex gap-x-3">
+            <!-- Icon -->
+            <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+                <div class="relative z-10 size-7 flex justify-center items-center">
+                    <div class="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>
+                </div>
+            </div>
+            <!-- End Icon -->
+
+            <!-- Right Content -->
+            <div class="grow pt-0.5 pb-8">
+                <h3 class="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+                    Work practice in Urząd Miejski w Gdańsku
+                </h3>
+            </div>
+            
+            <!-- End Right Content -->
+        </div>
+        <!-- End Item -->
+
+        <!-- Timeline -->
+        <div class="ps-2 my-2 first:mt-0">
+            <h3 class="text-lg font-medium uppercase text-gray-500 dark-text-neutral-400">
+                2020
+            </h3>
+        </div>
+
+        <!-- Item -->
+        <div class="flex gap-x-3">
+            <!-- Icon -->
+            <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+                <div class="relative z-10 size-7 flex justify-center items-center">
+                    <div class="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>
+                </div>
+            </div>
+            <!-- End Icon -->
+
+            <!-- Right Content -->
+            <div class="grow pt-0.5 pb-8">
+                <h3 class="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+                    Applied Mathematics (2017-2020)
+                </h3>
+                <p class="mt-1 text-sm text-gray-600 dark:text-neutral-400">
+                    <ul class="ml-3 list-disc">
+                        <li>Gdańsk University of Technology</li>
+                        <li>Scholarship for the top 10% of students</li>
+                    </ul>
+                </p>
+            </div>
+            
+            <!-- End Right Content -->
+        </div>
+        <!-- End Item -->
+
+        <!-- Item -->
+        <div class="flex gap-x-3">
+            <!-- Icon -->
+            <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+            <div class="relative z-10 size-7 flex justify-center items-center">
+                <div class="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>
+            </div>
+            </div>
+            <!-- End Icon -->
+
+            <!-- Right Content -->
+            <div class="grow pt-0.5 pb-8">
+            <h3 class="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+                placeholder
+            </h3>
+            </div>
+            <!-- End Right Content -->
+        </div>
+        <!-- End Item -->
+
+        <!-- Timeline -->
+        <div class="ps-2 my-2 first:mt-0">
+            <h3 class="text-xl font-medium uppercase text-gray-500 dark-text-neutral-400">
+                2021
+            </h3>
+        </div>
+
+        <!-- Item -->
+        <div class="flex gap-x-3">
+            <!-- Icon -->
+            <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+            <div class="relative z-10 size-7 flex justify-center items-center">
+                <div class="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>
+            </div>
+            </div>
+            <!-- End Icon -->
+
+            <!-- Right Content -->
+            <div class="grow pt-0.5 pb-8">
+            <h3 class="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+                placeholder
+            </h3>
+            </div>
+            <!-- End Right Content -->
+        </div>
+        <!-- End Item -->
+
+        <!-- Timeline -->
+        <div class="ps-2 my-2 first:mt-0">
+            <h3 class="text-xl font-medium uppercase text-gray-500 dark-text-neutral-400">
+                2022
+            </h3>
+        </div>
+
+        <!-- Item -->
+        <div class="flex gap-x-3">
+            <!-- Icon -->
+            <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+            <div class="relative z-10 size-7 flex justify-center items-center">
+                <div class="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>
+            </div>
+            </div>
+            <!-- End Icon -->
+
+            <!-- Right Content -->
+            <div class="grow pt-0.5 pb-8">
+                <h3 class="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+                    Nokia R&D (2022-2024)
+                </h3>
+                <p class="mt-1 text-sm text-gray-600 dark:text-neutral-400">
+                    <ul class="ml-3 list-disc">
+                        <li>Django Backend Developer</li>
+                        <li>Frontend, DevOps and server administration elements</li>
+                        <li>Agile, Scrum</li>
+                    </ul>
+                </p>
+            </div>
+            <!-- End Right Content -->
+        </div>
+        <!-- End Item -->
+
+        <!-- Timeline -->
+        <div class="ps-2 my-2 first:mt-0">
+            <h3 class="text-xl font-medium uppercase text-gray-500 dark-text-neutral-400">
+                2023
+            </h3>
+        </div>
+
+        <!-- Item -->
+        <div class="flex gap-x-3">
+            <!-- Icon -->
+            <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+            <div class="relative z-10 size-7 flex justify-center items-center">
+                <div class="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>
+            </div>
+            </div>
+            <!-- End Icon -->
+
+            <!-- Right Content -->
+            <div class="grow pt-0.5 pb-8">
+            <h3 class="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+                zu.agency
+            </h3>
+            <p class="mt-1 text-sm text-gray-600 dark:text-neutral-400">
+                <ul class="ml-3 list-disc">
+                    <li>application integration</li>
+                    <li>task automation</li>
+                </ul>
+            </p>
+            </div>
+            <!-- End Right Content -->
+        </div>
+        <!-- End Item -->
+
+        <!-- Item -->
+        <div class="flex gap-x-3">
+            <!-- Icon -->
+            <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+            <div class="relative z-10 size-7 flex justify-center items-center">
+                <div class="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>
+            </div>
+            </div>
+            <!-- End Icon -->
+
+            <!-- Right Content -->
+            <div class="grow pt-0.5 pb-8">
+            <h3 class="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+                Interactive installation at the Gdynia Design Days exposition
+            </h3>
+            </div>
+            <!-- End Right Content -->
+        </div>
+        <!-- End Item -->
+
+        <!-- Timeline -->
+        <div class="ps-2 my-2 first:mt-0">
+            <h3 class="text-xl font-medium uppercase text-gray-500 dark-text-neutral-400">
+                2024
+            </h3>
+        </div>
+
+        <!-- Item -->
+        <div class="flex gap-x-3">
+            <!-- Icon -->
+            <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+            <div class="relative z-10 size-7 flex justify-center items-center">
+                <div class="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>
+            </div>
+            </div>
+            <!-- End Icon -->
+
+            <!-- Right Content -->
+            <div class="grow pt-0.5 pb-8">
+            <h3 class="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+                Informatics - Intelligent Interactive Systems (2019-2024)
+            </h3>
+            <p class="mt-1 text-sm text-gray-600 dark:text-neutral-400">
+                <ul class="ml-3 list-disc">
+                    <li>Gdańsk University of Technology</li>
+                    <li>Scholarship for the best students</li>
+                </ul>
+            </p>
+            </div>
+            <!-- End Right Content -->
+        </div>
+        <!-- End Item -->
+
+        <!-- Item -->
+        <div class="flex gap-x-3">
+            <!-- Icon -->
+            <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+            <div class="relative z-10 size-7 flex justify-center items-center">
+                <div class="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>
+            </div>
+            </div>
+            <!-- End Icon -->
+
+            <!-- Right Content -->
+            <div class="grow pt-0.5 pb-8">
+            <h3 class="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+                Prize in Gdańsk Animaton 2024 (animation hackathon)
+            </h3>
+            </div>
+            <!-- End Right Content -->
+        </div>
+        <!-- End Item -->
+
+        <!-- Timeline -->
+        <div class="ps-2 my-2 first:mt-0">
+            <h3 class="text-xl font-medium uppercase text-gray-500 dark-text-neutral-400">
+                2025
+            </h3>
+        </div>
+
+        <!-- Item -->
+        <div class="flex gap-x-3">
+            <!-- Icon -->
+            <div class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+            <div class="relative z-10 size-7 flex justify-center items-center">
+                <div class="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>
+            </div>
+            </div>
+            <!-- End Icon -->
+
+            <!-- Right Content -->
+            <div class="grow pt-0.5 pb-8">
+            <h3 class="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+                Informatics - Machine Learning (2024-2025)
+            </h3>
+            </div>
+            <!-- End Right Content -->
+        </div>
+        <!-- End Item -->
+    </div>
+</div>
+
+
+
+{% endblock %}
