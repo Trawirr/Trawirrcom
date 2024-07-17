@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Card
 
 def home_view(request):
-    return render(request, "pages/home.html", {})
+    return render(request, "pages/home/home.html", {})
 
 def cards_view(request):
     page = int(request.GET.get('page', 0))
@@ -21,7 +21,7 @@ def cards_view(request):
         'page_next': page_next,
     }
     print(f"{context=}")
-    return render(request, "pages/cards.html", context)
+    return render(request, "pages/home/cards.html", context)
 
 def about_me_view(request):
-    return render(request, "pages/about_me.html", {})
+    return render(request, "pages/home/about_me.html", {})
