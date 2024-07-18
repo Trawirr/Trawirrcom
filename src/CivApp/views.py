@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def civ_home_view(request):
+    return render(request, "pages/civ/civ_home.html", {})
