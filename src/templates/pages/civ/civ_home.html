@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load utilities %}
+
+{% block content %}
+<div data-x=0 data-y=0 data-zoom=1 id="map-container" class="w-screen h-screen justify-center items-center align-middle text-center">
+    <p>x = 0, y = 0, zoom = 1</p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        let map = document.getElementById('map-container');
+        let start_x, start_y, end_x, end_y;
+        let is_dragging = false;
+        let x = parseInt(map.dataset.x);
+        let y = parseInt(map.dataset.y);
+        let zoom = parseInt(map.dataset.zoom);
+
+        function bindMapEvents() {
+            console.log("binding...")
+            map.addEventListener("mousedown", (e) => {
+                is_dragging = true;
+                start_x = e.clientX;
+                start_y = e.clientY;
+                console.log('mousedown');
+            });
+
+            map.addEventListener("mouseup", (e) => {
+                end_x = e.clientX;
+                end_y = e.clientY;
+                is_dragging = false;
+                console.log(parseInt(start_x - end_x), typeof(parseInt(start_x - end_x)), x, typeof(x));
+                console.log(parseInt(start_y - end_y), y);
+                htmx.ajax('GET', '/civ/map?x=' + (x + parseInt(start_x - end_x)) + '&y=' + (y + parseInt(start_y - end_y)) + '&zoom=' + zoom, {target:'map-container', swap:'outerHTML'})
+                console.log('mouseup');
+            });
+        }
+
+        bindMapEvents();
+
+        document.addEventListener('htmx:afterRequest', (e) => {
+            if (e.detail.target.id === 'map-container') {
+                map = document.getElementById('map-container');
+                bindMapEvents();
+            }
+        });
+    });
+</script>
+{% endblock %}
