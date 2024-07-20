@@ -14,12 +14,13 @@
         let map = document.getElementById('map-container');
         let start_x, start_y, end_x, end_y;
         let is_dragging = false;
-        let x = parseInt(map.dataset.x);
-        let y = parseInt(map.dataset.y);
-        let zoom = parseInt(map.dataset.zoom);
 
         function bindMapEvents() {
             console.log("binding...")
+            
+            let x = parseInt(map.dataset.x);
+            let y = parseInt(map.dataset.y);
+            let zoom = parseInt(map.dataset.zoom);
             map.addEventListener("mousedown", (e) => {
                 is_dragging = true;
                 start_x = e.clientX;
@@ -41,10 +42,8 @@
         bindMapEvents();
 
         document.addEventListener('htmx:afterRequest', (e) => {
-            if (e.detail.target.id === 'map-container') {
-                map = document.getElementById('map-container');
-                bindMapEvents();
-            }
+            map = document.getElementById('map-container');
+            bindMapEvents();
         });
     });
 </script>
