@@ -12,7 +12,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         let map = document.getElementById('map-container');
-        let start_x, start_y, end_x, end_y;
+        let start_x, start_y, end_x, end_y, delta_zoom;
         let is_dragging = false;
 
         function bindMapEvents() {
@@ -25,6 +25,7 @@
                 is_dragging = true;
                 start_x = e.clientX;
                 start_y = e.clientY;
+                map.classList.toggle('cursor-grabbing')
                 console.log('mousedown');
             });
 
@@ -36,6 +37,13 @@
                 console.log(parseInt(start_y - end_y), y);
                 htmx.ajax('GET', '/civ/map?x=' + (x + parseInt(start_x - end_x)) + '&y=' + (y + parseInt(start_y - end_y)) + '&zoom=' + zoom, {target:'map-container', swap:'outerHTML'})
                 console.log('mouseup');
+            });
+
+            window.addEventListener("wheel", (e) => {
+                console.log("scrolling...", e.deltaY, typeof(e.deltaY));
+                if (e.deltaY > 0) delta_zoom = 1;
+                else delta_zoom = -1;
+                htmx.ajax('GET', '/civ/map?x=' + x + '&y=' + y + '&zoom=' + (zoom + delta_zoom), {target:'map-container', swap:'outerHTML'})
             });
         }
 
