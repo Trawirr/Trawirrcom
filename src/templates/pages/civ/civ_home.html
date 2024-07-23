@@ -2,16 +2,17 @@
 {% load static %}
 {% load utilities %}
 
+
 {% block content %}
-<div data-x=0 data-y=0 data-zoom=1 id="map-container" class="w-screen h-screen justify-center items-center align-middle text-center">
-    <p>x = 0, y = 0, zoom = 1</p>
+<div id="map-container" class="w-screen h-screen justify-center items-center align-middle text-center">
+    <img data-x=0 data-y=0 data-zoom=1 id="map" src="media/images/mapaeuropy.jpg" alt="map" class="overscroll-none object-none">
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        let map = document.getElementById('map-container');
+        let map = document.getElementById('map');
         let start_x, start_y, end_x, end_y, delta_zoom;
         let is_dragging = false;
 
@@ -27,6 +28,15 @@
                 start_y = e.clientY;
                 map.classList.toggle('cursor-grabbing')
                 console.log('mousedown');
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (is_dragging) {
+                    const dx = e.clientX - start_x;
+                    const dy = e.clientY - start_y;
+                    map.style.left = `${dx}px`;
+                    map.style.top = `${dy}px`;
+                }
             });
 
             map.addEventListener("mouseup", (e) => {
@@ -45,12 +55,14 @@
                 else delta_zoom = -1;
                 htmx.ajax('GET', '/civ/map?x=' + x + '&y=' + y + '&zoom=' + (zoom + delta_zoom), {target:'map-container', swap:'outerHTML'})
             });
+
+            document.getElementById('map').ondragstart = function() { return false; };
         }
 
         bindMapEvents();
 
         document.addEventListener('htmx:afterRequest', (e) => {
-            map = document.getElementById('map-container');
+            map = document.getElementById('map');
             bindMapEvents();
         });
     });
