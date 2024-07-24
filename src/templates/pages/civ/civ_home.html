@@ -2,69 +2,127 @@
 {% load static %}
 {% load utilities %}
 
-
 {% block content %}
-<div id="map-container" class="w-screen h-screen justify-center items-center align-middle text-center">
-    <img data-x=0 data-y=0 data-zoom=1 id="map" src="media/images/mapaeuropy.jpg" alt="map" class="overscroll-none object-none">
+<div id="map-container" class="w-screen h-screen justify-center items-center align-middle text-center relative overflow-hidden">
+    <div id="map-wrapper" class="absolute inset-0">
+        <img data-x=0 data-y=0 data-zoom=1 id="map" src="{% static 'media/images/mapaeuropy.jpg' %}" alt="map" class="absolute cursor-grab">
+        <img data-x=0 data-y=0 data-zoom=1 id="map-copy-1" src="{% static 'media/images/mapaeuropy.jpg' %}" alt="map" class="absolute cursor-grab">
+        <img data-x=0 data-y=0 data-zoom=1 id="map-copy-2" src="{% static 'media/images/mapaeuropy.jpg' %}" alt="map" class="absolute cursor-grab">
+        <img data-x=0 data-y=0 data-zoom=1 id="map-copy-3" src="{% static 'media/images/mapaeuropy.jpg' %}" alt="map" class="absolute cursor-grab">
+    </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        let map = document.getElementById('map');
-        let start_x, start_y, end_x, end_y, delta_zoom;
-        let is_dragging = false;
+        const mapContainer = document.getElementById('map-container');
+        const mapWrapper = document.getElementById('map-wrapper');
+        const maps = document.querySelectorAll('#map-wrapper img');
+        let startX, startY, isDragging = false;
+        let translateX = 0, translateY = 0;
+        let zoom = 1;
+
+        function updateTransform() {
+            mapWrapper.style.transform = `translate(${translateX}px, ${translateY}px) scale(${zoom})`;
+        }
+
+        function positionMaps() {
+            const mapWidth = maps[0].naturalWidth;
+            const mapHeight = maps[0].naturalHeight;
+
+            maps[0].style.left = '0px';
+            maps[0].style.top = '0px';
+
+            maps[1].style.left = `${mapWidth}px`;
+            maps[1].style.top = '0px';
+
+            maps[2].style.left = '0px';
+            maps[2].style.top = `${mapHeight}px`;
+
+            maps[3].style.left = `${mapWidth}px`;
+            maps[3].style.top = `${mapHeight}px`;
+        }
+
+        function wrapAround() {
+            const mapWidth = maps[0].naturalWidth;
+            const mapHeight = maps[0].naturalHeight;
+
+            maps.forEach((map) => {
+                const mapLeft = parseFloat(map.style.left || 0);
+                const mapTop = parseFloat(map.style.top || 0);
+
+                if (mapLeft + translateX > mapContainer.offsetWidth) {
+                    map.style.left = `${mapLeft - mapWidth * maps.length}px`;
+                } else if (mapLeft + translateX < -mapWidth) {
+                    map.style.left = `${mapLeft + mapWidth * maps.length}px`;
+                }
+
+                if (mapTop + translateY > mapContainer.offsetHeight) {
+                    map.style.top = `${mapTop - mapHeight * maps.length}px`;
+                } else if (mapTop + translateY < -mapHeight) {
+                    map.style.top = `${mapTop + mapHeight * maps.length}px`;
+                }
+            });
+        }
 
         function bindMapEvents() {
-            console.log("binding...")
-            
-            let x = parseInt(map.dataset.x);
-            let y = parseInt(map.dataset.y);
-            let zoom = parseInt(map.dataset.zoom);
-            map.addEventListener("mousedown", (e) => {
-                is_dragging = true;
-                start_x = e.clientX;
-                start_y = e.clientY;
-                map.classList.toggle('cursor-grabbing')
-                console.log('mousedown');
+            mapWrapper.addEventListener("mousedown", (e) => {
+                isDragging = true;
+                startX = e.clientX - translateX;
+                startY = e.clientY - translateY;
+                mapWrapper.classList.add('cursor-grabbing');
+                mapWrapper.classList.remove('cursor-grab');
             });
 
             document.addEventListener('mousemove', (e) => {
-                if (is_dragging) {
-                    const dx = e.clientX - start_x;
-                    const dy = e.clientY - start_y;
-                    map.style.left = `${dx}px`;
-                    map.style.top = `${dy}px`;
+                if (isDragging) {
+                    translateX = e.clientX - startX;
+                    translateY = e.clientY - startY;
+                    updateTransform();
+                    wrapAround();
                 }
             });
 
-            map.addEventListener("mouseup", (e) => {
-                end_x = e.clientX;
-                end_y = e.clientY;
-                is_dragging = false;
-                console.log(parseInt(start_x - end_x), typeof(parseInt(start_x - end_x)), x, typeof(x));
-                console.log(parseInt(start_y - end_y), y);
-                htmx.ajax('GET', '/civ/map?x=' + (x + parseInt(start_x - end_x)) + '&y=' + (y + parseInt(start_y - end_y)) + '&zoom=' + zoom, {target:'map-container', swap:'outerHTML'})
-                console.log('mouseup');
+            document.addEventListener("mouseup", () => {
+                if (isDragging) {
+                    isDragging = false;
+                    mapWrapper.classList.add('cursor-grab');
+                    mapWrapper.classList.remove('cursor-grabbing');
+                }
             });
 
             window.addEventListener("wheel", (e) => {
-                console.log("scrolling...", e.deltaY, typeof(e.deltaY));
-                if (e.deltaY > 0) delta_zoom = 1;
-                else delta_zoom = -1;
-                htmx.ajax('GET', '/civ/map?x=' + x + '&y=' + y + '&zoom=' + (zoom + delta_zoom), {target:'map-container', swap:'outerHTML'})
-            });
+                e.preventDefault(); // Prevent the default scroll behavior
+                const delta = e.deltaY < 0 ? 0.1 : -0.1;
+                const rect = mapContainer.getBoundingClientRect();
+                const offsetX = (e.clientX - rect.left) / rect.width;
+                const offsetY = (e.clientY - rect.top) / rect.height;
 
-            document.getElementById('map').ondragstart = function() { return false; };
+                const prevZoom = zoom;
+                zoom = Math.max(0.1, zoom + delta);
+
+                // Adjust translateX and translateY to keep the zoom centered on the mouse position
+                translateX -= offsetX * (zoom - prevZoom) * maps[0].naturalWidth;
+                translateY -= offsetY * (zoom - prevZoom) * maps[0].naturalHeight;
+
+                updateTransform();
+                wrapAround();
+            }, { passive: false }); // Use { passive: false } to ensure e.preventDefault() works
+
+            mapWrapper.ondragstart = function() { return false; };
         }
 
+        positionMaps();
         bindMapEvents();
 
-        document.addEventListener('htmx:afterRequest', (e) => {
-            map = document.getElementById('map');
+        document.addEventListener('htmx:afterRequest', () => {
+            maps = document.querySelectorAll('#map-wrapper img');
+            positionMaps();
             bindMapEvents();
         });
+
+        updateTransform();
     });
 </script>
 {% endblock %}
