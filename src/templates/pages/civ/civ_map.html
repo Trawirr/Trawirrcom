@@ -1,3 +1,6 @@
-<div id="map-container" class="select-none w-screen h-screen justify-center items-center align-middle text-center">
-    <img data-x={{ x }} data-y={{ y }} data-zoom={{ zoom }} data-x=0 data-y=0 data-zoom=1 id="map" src="media/images/mapaeuropy.jpg" alt="map" class="overscroll-none">
+<div data-x='{{ x }}' data-y='{{ y }}' data-zoom='{{ zoom }}' id="map-grid" class="grid grid-cols-2 grid-rows-2 w-screen h-screen justify-center items-center align-middle text-center">
+    <div class="map-part h-full col-span-1 row-span-1 bg-cover" id="img-tl"></div>
+    <div class="map-part h-full col-span-1 row-span-1 bg-cover" id="img-tr"></div>
+    <div class="map-part h-full col-span-1 row-span-1 bg-cover" id="img-bl"></div>
+    <div class="map-part h-full col-span-1 row-span-1 bg-cover" id="img-br"></div>
 </div>
