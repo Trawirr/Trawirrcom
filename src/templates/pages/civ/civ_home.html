@@ -5,10 +5,7 @@
 {% block content %}
 <div id="map-container" data-x="0" data-y="0" data-zoom="1">
     <div id="map-grid" class="w-screen h-screen justify-center items-center align-middle text-center">
-        <div class="map-part h-full col-span-1 row-span-1 bg-cover" id="img-tl"></div>
-        <div class="map-part h-full col-span-1 row-span-1 bg-cover" id="img-tr"></div>
-        <div class="map-part h-full col-span-1 row-span-1 bg-cover" id="img-bl"></div>
-        <div class="map-part h-full col-span-1 row-span-1 bg-cover" id="img-br"></div>
+        <div class="map-part h-full col-span-1 row-span-1 bg-repeat-x" id="map"></div>
     </div>
 </div>
 {% endblock %}
@@ -21,7 +18,7 @@
     // Function to set background image and position
     const setImage = (element, position) => {
         element.style.backgroundImage = `url(${imageUrl})`;
-        element.style.backgroundSize = `${zoom * 100}%`; // Adjust zoom to fit the grid
+        element.style.backgroundSize = `${zoom * 200}%`; // Adjust zoom to fit the grid
         element.style.backgroundPosition = position;
     };
 
@@ -31,6 +28,7 @@
 
             let mapContainer = document.getElementById('map-container');
             let mapGrid = document.getElementById('map-grid');
+            let map = document.getElementById('map');
             let x = parseInt(mapContainer.dataset.x);
             let y = parseInt(mapContainer.dataset.y);
             let zoom = parseInt(mapContainer.dataset.zoom);
@@ -43,14 +41,15 @@
                 start_x = e.clientX;
                 start_y = e.clientY;
                 mapGrid.classList.add('cursor-grabbing');
-                console.log('mousedown');
+                console.log('mousedown ', x, y);
             });
 
             document.addEventListener('mousemove', (e) => {
                 if (is_dragging) {
                     const dx = e.clientX - start_x;
                     const dy = e.clientY - start_y;
-                    mapGrid.style.transform = `translate(${dx}px, ${dy}px)`;
+                    console.log(parseInt(x + dx), parseInt(y + dy));
+                    map.style.backgroundPosition = parseInt(x + dx) + 'px ' + parseInt(y + dy) + 'px'; //`${} ${y + dy}`;
                 }
             });
 
@@ -60,10 +59,10 @@
                     end_y = e.clientY;
                     is_dragging = false;
                     mapGrid.classList.remove('cursor-grabbing');
-                    x += parseInt(start_x - end_x);
-                    y += parseInt(start_y - end_y);
-                    htmx.ajax('GET', `/civ/map?x=${x}&y=${y}&zoom=${zoom}`, {target: '#map-container', swap: 'outerHTML'});
-                    console.log('mouseup');
+                    x += parseInt(end_x - start_x);
+                    y += parseInt(end_y - start_y);
+                    //htmx.ajax('GET', `/civ/map?x=${x}&y=${y}&zoom=${zoom}`, {target: '#map-container', swap: 'outerHTML'});
+                    console.log('mouseup ', x, y);
                 }
             });
 
@@ -76,10 +75,7 @@
             mapGrid.ondragstart = function() { return false; };
 
             // Apply the image to each container with the appropriate position
-            setImage(document.getElementById('img-tl'), '0% 0%');
-            setImage(document.getElementById('img-tr'), '100% 0%');
-            setImage(document.getElementById('img-bl'), '0% 100%');
-            setImage(document.getElementById('img-br'), '100% 100%');
+            setImage(document.getElementById('map'), '0% 0%');
             console.log("map parts set");
         }
 
