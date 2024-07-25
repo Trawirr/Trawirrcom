@@ -3,7 +3,7 @@
 {% load utilities %}
 
 {% block content %}
-<div id="map-container" data-x="0" data-y="0" data-zoom="1">
+<div id="map-container" data-x="0" data-y="0" data-zoom="100">
     <div id="map-grid" class="w-screen h-screen justify-center items-center align-middle text-center">
         <div class="map-part h-full col-span-1 row-span-1 bg-repeat-x" id="map"></div>
     </div>
@@ -12,13 +12,12 @@
 
 {% block scripts %}
 <script>
-    const imageUrl = "media/images/mapaeuropy.jpg"; // Replace with your image URL
+    const imageUrl = "media/images/world.jpg";
     let x, y, zoom;
 
-    // Function to set background image and position
     const setImage = (element, position) => {
         element.style.backgroundImage = `url(${imageUrl})`;
-        element.style.backgroundSize = `${zoom * 200}%`; // Adjust zoom to fit the grid
+        element.style.backgroundSize = `${zoom}%`;
         element.style.backgroundPosition = position;
     };
 
@@ -49,7 +48,7 @@
                     const dx = e.clientX - start_x;
                     const dy = e.clientY - start_y;
                     console.log(parseInt(x + dx), parseInt(y + dy));
-                    map.style.backgroundPosition = parseInt(x + dx) + 'px ' + parseInt(y + dy) + 'px'; //`${} ${y + dy}`;
+                    map.style.backgroundPosition = parseInt(x + dx) + 'px ' + parseInt(y + dy) + 'px';
                 }
             });
 
@@ -61,7 +60,6 @@
                     mapGrid.classList.remove('cursor-grabbing');
                     x += parseInt(end_x - start_x);
                     y += parseInt(end_y - start_y);
-                    //htmx.ajax('GET', `/civ/map?x=${x}&y=${y}&zoom=${zoom}`, {target: '#map-container', swap: 'outerHTML'});
                     console.log('mouseup ', x, y);
                 }
             });
@@ -69,12 +67,12 @@
             window.addEventListener("wheel", (e) => {
                 console.log("scrolling...", e.deltaY, typeof(e.deltaY));
                 delta_zoom = e.deltaY > 0 ? 1 : -1;
-                htmx.ajax('GET', `/civ/map?x=${x}&y=${y}&zoom=${zoom + delta_zoom}`, {target: '#map-container', swap: 'outerHTML'});
+                zoom += delta_zoom;
+                map.style.backgroundSize = `${zoom * 5}%`;
             });
 
             mapGrid.ondragstart = function() { return false; };
 
-            // Apply the image to each container with the appropriate position
             setImage(document.getElementById('map'), '0% 0%');
             console.log("map parts set");
         }
