@@ -13,12 +13,20 @@
 {% block scripts %}
 <script>
     const imageUrl = "media/images/world.jpg";
-    let x, y, zoom;
+    let x, y, zoom, width, height;
 
     const setImage = (element, position) => {
         element.style.backgroundImage = `url(${imageUrl})`;
         element.style.backgroundSize = `${zoom}%`;
         element.style.backgroundPosition = position;
+
+        var imageSrc = element.style.backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
+        var image = new Image();
+        image.src = imageSrc;
+
+        width = image.width,
+        height = image.height;
+        console.log(width, height);
     };
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -81,10 +89,6 @@
 
         document.addEventListener('htmx:afterRequest', (e) => {
             bindMapEvents();
-            setImage(document.getElementById('img-tl'), '0% 0%');
-            setImage(document.getElementById('img-tr'), '100% 0%');
-            setImage(document.getElementById('img-bl'), '0% 100%');
-            setImage(document.getElementById('img-br'), '100% 100%');
         });
     });
 </script>
