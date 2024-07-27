@@ -72,10 +72,16 @@
                 }
 
                 console.log("mouseup 2");
+                // returning to first map
                 if (x * zoom * 5 > width || x * zoom * 5 < -width){
                     console.log("x cut");
                     x = x % width;
                 }
+
+                // returning to vertical borders
+                if (y > 0) y = 0;
+
+                map.style.backgroundPosition = x + 'px ' + y + 'px';
             });
 
             window.addEventListener("wheel", (e) => {
