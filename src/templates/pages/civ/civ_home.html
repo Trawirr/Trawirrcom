@@ -70,13 +70,19 @@
                     y += parseInt(end_y - start_y);
                     console.log('mouseup ', x, y);
                 }
+
+                console.log("mouseup 2");
+                if (x * zoom * 5 > width || x * zoom * 5 < -width){
+                    console.log("x cut");
+                    x = x % width;
+                }
             });
 
             window.addEventListener("wheel", (e) => {
-                console.log("scrolling...", e.deltaY, typeof(e.deltaY));
                 delta_zoom = e.deltaY > 0 ? 1 : -1;
                 zoom += delta_zoom;
                 map.style.backgroundSize = `${zoom * 5}%`;
+                console.log("scrolling...", zoom);
             });
 
             mapGrid.ondragstart = function() { return false; };
