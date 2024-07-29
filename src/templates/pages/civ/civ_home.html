@@ -5,7 +5,7 @@
 {% block content %}
 <div id="map-container" data-x="0" data-y="0" data-zoom="100">
     <div id="map-grid" class="w-screen h-screen justify-center items-center align-middle text-center">
-        <div class="map-part h-full col-span-1 row-span-1 bg-repeat-x" id="map"></div>
+        <div class="map-part h-full col-span-1 row-span-1 bg-repeat-x bg-cover" id="map"></div>
     </div>
 </div>
 {% endblock %}
@@ -13,9 +13,27 @@
 {% block scripts %}
 <script>
     const imageUrl = "media/images/world.jpg";
-    let x, y, zoom, width, height;
+    let x, y, zoom, img_width, img_height, map_width, map_height;
 
-    const setImage = (element, position) => {
+    // calculating real sizes and coords ! ! ! ! ! ! ! ! ! ! ! ! 
+    // calculating real sizes and coords ! ! ! ! ! ! ! ! ! ! ! ! 
+    // calculating real sizes and coords ! ! ! ! ! ! ! ! ! ! ! ! 
+    // calculating real sizes and coords ! ! ! ! ! ! ! ! ! ! ! ! 
+    // calculating real sizes and coords ! ! ! ! ! ! ! ! ! ! ! ! 
+    const calc_real = (x, y, zoom, img_width, img_height) => {
+        real_x = 0;
+        real_y = 0;
+        real_img_width = 0;
+        real_img_height = 0;
+        return real_x, real_y, real_width, real_height
+    };
+
+    // zooming in current coords not at the 0, 0
+    const set_zoom = (x, y, old_zoom, new_zoom) => {
+
+    };
+
+    const set_image = (element, position) => {
         element.style.backgroundImage = `url(${imageUrl})`;
         element.style.backgroundSize = `${zoom}%`;
         element.style.backgroundPosition = position;
@@ -24,9 +42,9 @@
         var image = new Image();
         image.src = imageSrc;
 
-        width = image.width,
-        height = image.height;
-        console.log(width, height);
+        img_width = image.width,
+        img_height = image.height;
+        console.log(img_width, img_height);
     };
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -39,6 +57,7 @@
             let x = parseInt(mapContainer.dataset.x);
             let y = parseInt(mapContainer.dataset.y);
             let zoom = parseInt(mapContainer.dataset.zoom);
+            map.style.backgroundSize = `${zoom}%`;
 
             let is_dragging = false;
             let start_x, start_y, end_x, end_y, delta_zoom;
@@ -73,7 +92,7 @@
 
                 console.log("mouseup 2");
                 // returning to first map
-                if (x * zoom * 5 > width || x * zoom * 5 < -width){
+                if (x * zoom > width || x * zoom < -width){
                     console.log("x cut");
                     x = x % width;
                 }
@@ -86,14 +105,14 @@
 
             window.addEventListener("wheel", (e) => {
                 delta_zoom = e.deltaY > 0 ? 1 : -1;
-                zoom += delta_zoom;
-                map.style.backgroundSize = `${zoom * 5}%`;
+                zoom += delta_zoom * 5;
+                map.style.backgroundSize = `${zoom}%`;
                 console.log("scrolling...", zoom);
             });
 
             mapGrid.ondragstart = function() { return false; };
 
-            setImage(document.getElementById('map'), '0% 0%');
+            set_image(document.getElementById('map'), '0% 0%');
             console.log("map parts set");
         }
 
