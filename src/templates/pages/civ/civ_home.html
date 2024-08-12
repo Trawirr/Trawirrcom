@@ -15,20 +15,12 @@
     const imageUrl = "media/images/world.jpg";
     let x, y, zoom, img_width, img_height, map_width, map_height;
 
-    // calculating real sizes and coords ! ! ! ! ! ! ! ! ! ! ! ! 
-    // calculating real sizes and coords ! ! ! ! ! ! ! ! ! ! ! ! 
-    // calculating real sizes and coords ! ! ! ! ! ! ! ! ! ! ! ! 
-    // calculating real sizes and coords ! ! ! ! ! ! ! ! ! ! ! ! 
-    // calculating real sizes and coords ! ! ! ! ! ! ! ! ! ! ! ! 
-    const calc_real = (x, y, zoom, img_width, img_height) => {
-        real_x = 0;
-        real_y = 0;
-        real_img_width = 0;
-        real_img_height = 0;
+    const calc_real = (zoom, img_width, img_height) => {
+        real_img_width = img_width * zoom / 100.0;
+        real_img_height = img_height * zoom / 100.0;
         return real_x, real_y, real_width, real_height
     };
 
-    // zooming in current coords not at the 0, 0
     const set_zoom = (x, y, old_zoom, new_zoom) => {
 
     };
