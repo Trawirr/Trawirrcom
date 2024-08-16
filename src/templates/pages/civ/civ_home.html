@@ -12,13 +12,14 @@
 
 {% block scripts %}
 <script>
-    const imageUrl = "media/images/world.jpg";
-    let x, y, zoom, img_width, img_height, map_width, map_height;
+    const imageUrl = "/media/images/world.jpg";
+    let x, y, zoom, img_width, img_height, map_width, map_height, real_img_width, real_img_height;
 
     const calc_real = (zoom, img_width, img_height) => {
         real_img_width = img_width * zoom / 100.0;
         real_img_height = img_height * zoom / 100.0;
-        return real_x, real_y, real_width, real_height
+        console.log("calc real: ", zoom, img_width, img_height, real_img_width, real_img_height)
+        return real_img_width, real_img_height;
     };
 
     const set_zoom = (x, y, old_zoom, new_zoom) => {
@@ -84,10 +85,10 @@
 
                 console.log("mouseup 2");
                 // returning to first map
-                if (x * zoom > width || x * zoom < -width){
-                    console.log("x cut");
-                    x = x % width;
-                }
+                // if (x * zoom > width || x * zoom < -width){
+                //     console.log("x cut");
+                //     x = x % width;
+                // }
 
                 // returning to vertical borders
                 if (y > 0) y = 0;
@@ -99,7 +100,8 @@
                 delta_zoom = e.deltaY > 0 ? 1 : -1;
                 zoom += delta_zoom * 5;
                 map.style.backgroundSize = `${zoom}%`;
-                console.log("scrolling...", zoom);
+                calc_real();
+                console.log("scrolling...", zoom, real_img_height, real_img_width);
             });
 
             mapGrid.ondragstart = function() { return false; };
