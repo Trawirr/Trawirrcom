@@ -13,13 +13,12 @@
 {% block scripts %}
 <script>
     const imageUrl = "/media/images/world.jpg";
-    let x, y, zoom, img_width, img_height, map_width, map_height, real_img_width, real_img_height;
+    let x, y, zoom, img_width, img_height, screen_width, screen_height, real_img_width, real_img_height;
 
-    const calc_real = (zoom, img_width, img_height) => {
-        real_img_width = img_width * zoom / 100.0;
-        real_img_height = img_height * zoom / 100.0;
+    const calc_real_size = () => {
+        real_img_width = screen_width * zoom / 100.0;
+        real_img_height = screen_height * zoom / 100.0;
         console.log("calc real: ", zoom, img_width, img_height, real_img_width, real_img_height)
-        return real_img_width, real_img_height;
     };
 
     const set_zoom = (x, y, old_zoom, new_zoom) => {
@@ -47,11 +46,16 @@
             let mapGrid = document.getElementById('map-grid');
             let map = document.getElementById('map');
             // getting data
-            let x = parseInt(mapContainer.dataset.x);
-            let y = parseInt(mapContainer.dataset.y);
-            let zoom = parseInt(mapContainer.dataset.zoom);
+            x = parseInt(mapContainer.dataset.x);
+            y = parseInt(mapContainer.dataset.y);
+            zoom = parseInt(mapContainer.dataset.zoom);
             // setting zoom
             map.style.backgroundSize = `${zoom}%`;
+            // getting screen size
+            screen_width = map.getBoundingClientRect()['width']
+            screen_height = map.getBoundingClientRect()['height']
+            // setting map size
+            calc_real_size();
 
             let is_dragging = false;
             let start_x, start_y, end_x, end_y, delta_zoom;
@@ -70,6 +74,8 @@
                     const dy = e.clientY - start_y;
                     console.log(parseInt(x + dx), parseInt(y + dy));
                     map.style.backgroundPosition = parseInt(x + dx) + 'px ' + parseInt(y + dy) + 'px';
+
+                    // ADD VERTICAL BORDERS
                 }
             });
 
@@ -84,9 +90,22 @@
                     console.log('mouseup ', x, y);
                 }
 
-                console.log("mouseup 2");
+                console.log(`mouseup 2, x = ${x}, real_img_width = ${real_img_width}`);
+                // returning to first map
+                if (x > real_img_width || x < -real_img_width){
+                    console.log("x cut");
+                    x = x % real_img_width;
+                }
 
-                if (y > 0) y = 0;
+                // returning to vertical borders
+                if (y > 0){
+                    console.log("upper limit", y, screen_height, real_img_height);
+                    y = 0;
+                }
+                else if (y - screen_height < -real_img_height){
+                    console.log("lower limit", y, screen_height, real_img_height);
+                    y = -real_img_height + screen_height;
+                }
 
                 map.style.backgroundPosition = x + 'px ' + y + 'px';
             });
@@ -95,7 +114,7 @@
                 delta_zoom = e.deltaY > 0 ? 1 : -1;
                 zoom += delta_zoom * 5;
                 map.style.backgroundSize = `${zoom}%`;
-                calc_real();
+                calc_real_size();
                 console.log("scrolling...", zoom, real_img_height, real_img_width);
             });
 
