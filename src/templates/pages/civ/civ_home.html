@@ -17,7 +17,7 @@
 
     const calc_real_size = () => {
         real_img_width = screen_width * zoom / 100.0;
-        real_img_height = screen_height * zoom / 100.0;
+        real_img_height = real_img_width * img_height / img_width;
         console.log("calc real: ", zoom, img_width, img_height, real_img_width, real_img_height)
     };
 
