@@ -42,14 +42,15 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         function bindMapEvents() {
-            console.log("binding...");
-
+            // getting map elements
             let mapContainer = document.getElementById('map-container');
             let mapGrid = document.getElementById('map-grid');
             let map = document.getElementById('map');
+            // getting data
             let x = parseInt(mapContainer.dataset.x);
             let y = parseInt(mapContainer.dataset.y);
             let zoom = parseInt(mapContainer.dataset.zoom);
+            // setting zoom
             map.style.backgroundSize = `${zoom}%`;
 
             let is_dragging = false;
@@ -84,13 +85,7 @@
                 }
 
                 console.log("mouseup 2");
-                // returning to first map
-                // if (x * zoom > width || x * zoom < -width){
-                //     console.log("x cut");
-                //     x = x % width;
-                // }
 
-                // returning to vertical borders
                 if (y > 0) y = 0;
 
                 map.style.backgroundPosition = x + 'px ' + y + 'px';
