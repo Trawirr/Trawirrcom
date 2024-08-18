@@ -21,6 +21,17 @@
         console.log("calc real: ", zoom, img_width, img_height, real_img_width, real_img_height)
     };
 
+    const clamp_borders = () => {
+        if (y > 0){
+            console.log("upper limit", y, screen_height, real_img_height);
+            y = 0;
+        }
+        else if (y - screen_height < -real_img_height){
+            console.log("lower limit", y, screen_height, real_img_height);
+            y = -real_img_height + screen_height;
+        }
+    };
+
     const set_zoom = (x, y, old_zoom, new_zoom) => {
 
     };
@@ -54,13 +65,12 @@
             // getting screen size
             screen_width = map.getBoundingClientRect()['width']
             screen_height = map.getBoundingClientRect()['height']
-            // setting map size
-            calc_real_size();
 
             let is_dragging = false;
             let start_x, start_y, end_x, end_y, delta_zoom;
 
             mapGrid.addEventListener("mousedown", (e) => {
+                calc_real_size();
                 is_dragging = true;
                 start_x = e.clientX;
                 start_y = e.clientY;
@@ -121,6 +131,8 @@
             mapGrid.ondragstart = function() { return false; };
 
             set_image(document.getElementById('map'), '0% 0%');
+            // setting map size
+            calc_real_size();
             console.log("map parts set");
         }
 
