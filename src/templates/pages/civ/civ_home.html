@@ -32,8 +32,18 @@
         }
     };
 
-    const set_zoom = (x, y, old_zoom, new_zoom) => {
+    const fix_zoom = (old_zoom, new_zoom) => {
+        let center_x, center_y, new_center_x, new_center_y;
+        center_x = x + screen_width / 2;
+        center_y = y - screen_height / 2;
+        new_center_x = center_x * new_zoom / old_zoom;
+        new_center_y = center_y * new_zoom / old_zoom;
 
+        console.log(`pre zoom: x = ${x}, y = ${y}, img_width = ${real_img_width}, img_height = ${real_img_height}`);
+        x = new_center_x - screen_width / 2;
+        y = new_center_y + screen_height / 2;
+        console.log(`post zoom: x = ${x}, y = ${y}`);
+        map.style.backgroundPosition = parseInt(x) + 'px ' + parseInt(y) + 'px';
     };
 
     const set_image = (element, position) => {
@@ -121,10 +131,12 @@
             });
 
             window.addEventListener("wheel", (e) => {
+                let old_zoom = zoom;
                 delta_zoom = e.deltaY > 0 ? 1 : -1;
                 zoom += delta_zoom * 5;
                 map.style.backgroundSize = `${zoom}%`;
                 calc_real_size();
+                fix_zoom(old_zoom, zoom);
                 console.log("scrolling...", zoom, real_img_height, real_img_width);
             });
 
