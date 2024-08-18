@@ -34,14 +34,14 @@
 
     const fix_zoom = (old_zoom, new_zoom) => {
         let center_x, center_y, new_center_x, new_center_y;
-        center_x = x + screen_width / 2;
-        center_y = y - screen_height / 2;
+        center_x = screen_width / 2 - x;
+        center_y = screen_height / 2 - y;
         new_center_x = center_x * new_zoom / old_zoom;
         new_center_y = center_y * new_zoom / old_zoom;
 
         console.log(`pre zoom: x = ${x}, y = ${y}, img_width = ${real_img_width}, img_height = ${real_img_height}`);
-        x = new_center_x - screen_width / 2;
-        y = new_center_y + screen_height / 2;
+        x -= (new_center_x - center_x);
+        y -= (new_center_y - center_y);
         console.log(`post zoom: x = ${x}, y = ${y}`);
         map.style.backgroundPosition = parseInt(x) + 'px ' + parseInt(y) + 'px';
     };
