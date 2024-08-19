@@ -93,9 +93,18 @@
                     const dx = e.clientX - start_x;
                     const dy = e.clientY - start_y;
                     console.log(parseInt(x + dx), parseInt(y + dy));
-                    map.style.backgroundPosition = parseInt(x + dx) + 'px ' + parseInt(y + dy) + 'px';
 
-                    // ADD VERTICAL BORDERS
+                    // returning to vertical borders
+                    if (y + dy > 0){
+                        console.log("upper limit", y, screen_height, real_img_height);
+                        y = -dy;
+                    }
+                    if (y + dy - screen_height < -real_img_height){
+                        console.log("lower limit", y, screen_height, real_img_height);
+                        y = -real_img_height + screen_height - dy;
+                    }
+
+                    map.style.backgroundPosition = parseInt(x + dx) + 'px ' + parseInt(y + dy) + 'px';
                 }
             });
 
@@ -111,20 +120,10 @@
                 }
 
                 console.log(`mouseup 2, x = ${x}, real_img_width = ${real_img_width}`);
-                // returning to first map
+                // returning to first map copy
                 if (x > real_img_width || x < -real_img_width){
                     console.log("x cut");
                     x = x % real_img_width;
-                }
-
-                // returning to vertical borders
-                if (y > 0){
-                    console.log("upper limit", y, screen_height, real_img_height);
-                    y = 0;
-                }
-                else if (y - screen_height < -real_img_height){
-                    console.log("lower limit", y, screen_height, real_img_height);
-                    y = -real_img_height + screen_height;
                 }
 
                 map.style.backgroundPosition = x + 'px ' + y + 'px';
