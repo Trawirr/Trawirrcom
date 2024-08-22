@@ -43,6 +43,18 @@
         x -= (new_center_x - center_x);
         y -= (new_center_y - center_y);
         console.log(`post zoom: x = ${x}, y = ${y}`);
+
+        if (y > 0 && y > screen_height){
+
+        }
+        if (y > 0){
+            console.log("upper limit", y, screen_height, real_img_height);
+            y = 0;
+        }
+        else if (y - screen_height < -real_img_height){
+            console.log("lower limit", y, screen_height, real_img_height);
+            y = -real_img_height + screen_height;
+        }
         map.style.backgroundPosition = parseInt(x) + 'px ' + parseInt(y) + 'px';
     };
 
