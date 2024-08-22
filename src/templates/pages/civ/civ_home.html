@@ -13,7 +13,12 @@
 {% block scripts %}
 <script>
     const imageUrl = "/media/images/world.jpg";
-    let x, y, zoom, img_width, img_height, screen_width, screen_height, real_img_width, real_img_height;
+    let x, y, zoom, img_width, img_height, screen_width, screen_height, real_img_width, real_img_height, min_zoom;
+
+    const calc_min_zoom = () => {
+        min_zoom = Math.ceil(screen_height / screen_width * img_width / img_height * 100);
+        console.log(`min zoom: ${min_zoom}`);
+    }
 
     const calc_real_size = () => {
         real_img_width = screen_width * zoom / 100.0;
@@ -33,29 +38,36 @@
     };
 
     const fix_zoom = (old_zoom, new_zoom) => {
-        let center_x, center_y, new_center_x, new_center_y;
+        let center_x, center_y, new_center_x, new_center_y, x_diff, y_diff;
         center_x = screen_width / 2 - x;
         center_y = screen_height / 2 - y;
         new_center_x = center_x * new_zoom / old_zoom;
         new_center_y = center_y * new_zoom / old_zoom;
 
         console.log(`pre zoom: x = ${x}, y = ${y}, img_width = ${real_img_width}, img_height = ${real_img_height}`);
-        x -= (new_center_x - center_x);
-        y -= (new_center_y - center_y);
-        console.log(`post zoom: x = ${x}, y = ${y}`);
+        x_diff = -(new_center_x - center_x);
+        y_diff = -(new_center_y - center_y);
 
-        if (y > 0 && y > screen_height){
-
+        // fixing position to keep screen within the map
+        if (y + y_diff >= 0 && y + y_diff - screen_height <= -real_img_height){
+            console.log("BOTH");
+            zoom = old_zoom;
+            map.style.backgroundSize = `${zoom}%`;
         }
-        if (y > 0){
-            console.log("upper limit", y, screen_height, real_img_height);
-            y = 0;
+        else{
+            x += x_diff;
+            y += y_diff;
+            console.log(`post zoom: x = ${x}, y = ${y}`);
+            if (y >= 0){
+                console.log("upper limit", y, screen_height, real_img_height);
+                y = 0;
+            }
+            if (y - screen_height <= -real_img_height){
+                console.log("lower limit", y, screen_height, real_img_height);
+                y = -real_img_height + screen_height;
+            }
+            map.style.backgroundPosition = parseInt(x) + 'px ' + parseInt(y) + 'px';
         }
-        else if (y - screen_height < -real_img_height){
-            console.log("lower limit", y, screen_height, real_img_height);
-            y = -real_img_height + screen_height;
-        }
-        map.style.backgroundPosition = parseInt(x) + 'px ' + parseInt(y) + 'px';
     };
 
     const set_image = (element, position) => {
@@ -144,7 +156,7 @@
             window.addEventListener("wheel", (e) => {
                 let old_zoom = zoom;
                 delta_zoom = e.deltaY > 0 ? 1 : -1;
-                zoom += delta_zoom * 5;
+                zoom = Math.max(min_zoom, zoom + delta_zoom * 5);
                 map.style.backgroundSize = `${zoom}%`;
                 calc_real_size();
                 fix_zoom(old_zoom, zoom);
@@ -156,6 +168,7 @@
             set_image(document.getElementById('map'), '0% 0%');
             // setting map size
             calc_real_size();
+            calc_min_zoom();
             console.log("map parts set");
         }
 
