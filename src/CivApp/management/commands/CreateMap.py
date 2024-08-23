@@ -1,21 +1,46 @@
 from django.core.management.base import BaseCommand
+from django.conf import settings
+from CivApp.models import Map
+from CivApp.utils.utils import *
 
 from PIL import Image
 
 import random
 
 class Command(BaseCommand):
-    help = 'Creates a new map with new Tiles, Areas and Civilizations'
+    help = 'Creates a new map'
 
     def add_arguments(self, parser):
-        # map parameters
-        parser.add_argument('-s', '--size', type=int, default=128, help='Size of a map')
+        # Map parameters
+        parser.add_argument('size', metavar='s', type=int, nargs='+', help='Two integers: width height')
         parser.add_argument('-o', '--octaves', type=str, default="3 6 12 24", help='List of octaves')
         parser.add_argument('-sl', '--sealevel', type=float, default=0.5, help='Sea level/procentage')
         parser.add_argument('-b', '--border', type=int, default=20, help='Border width')
         parser.add_argument('-sd', '--seed', type=int, default=random.randint(1, 100000), help='Map seed')
         parser.add_argument('-n', '--name', type=str, default="map", help='Map file name')
-        parser.add_argument('-u', '--username', type=str, default="root", help='Username generating a map')
 
     def handle(self, *args, **options):
         print("Creating a map...")
+        # Fetch options
+        width, height = options['size']
+        octaves = options['octaves']
+        sea_level_arg = options['sealevel']
+        border = options['border']
+        seed = options['seed']
+        name = options['name']
+        
+        # Prepare images and octaves
+        octaves = [int(o) for o in octaves.split()]
+        image_heightmap = Image.new("L", (width, height))
+        image_rgb = Image.new("RGB", (width, height))
+        image_biomes = Image.new("RGB", (width, height))
+        image_political = Image.new("RGB", (width, height))
+
+        for x in range(width):
+            for y in range(height):
+                tile_height = get_height(x, y, octaves, seed, min(width, height), border)
+                tile_type = "land" if tile_height >= 0 else "water"
+
+                image_rgb.putpixel((x, y), get_color(tile_height, tile_type))
+
+        image_rgb.save(settings.MEDIA_ROOT / f"{name}.png")
