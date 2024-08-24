@@ -84,6 +84,7 @@ def get_color(height, tile_type="land"):
         heights, colors = HEIGHTS_LAND, COLORS_LAND
     elif tile_type == "water":
         heights, colors = HEIGHTS_WATER, COLORS_WATER
+        height += 1
 
     for i, h in enumerate(heights):
         if h >= height:
