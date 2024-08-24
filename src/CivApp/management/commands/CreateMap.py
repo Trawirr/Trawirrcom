@@ -6,6 +6,7 @@ from CivApp.utils.utils import *
 from PIL import Image
 
 import random
+import time
 
 class Command(BaseCommand):
     help = 'Creates a new map'
@@ -13,7 +14,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         # Map parameters
         parser.add_argument('size', metavar='s', type=int, nargs='+', help='Two integers: width height')
-        parser.add_argument('-o', '--octaves', type=str, default="3 6 12 24", help='List of octaves')
+        parser.add_argument('-o', '--octaves', type=str, default="1 2 5 8 12", help='List of octaves')
         parser.add_argument('-sl', '--sealevel', type=float, default=0.5, help='Sea level/procentage')
         parser.add_argument('-b', '--border', type=int, default=20, help='Border width')
         parser.add_argument('-sd', '--seed', type=int, default=random.randint(1, 100000), help='Map seed')
@@ -36,11 +37,19 @@ class Command(BaseCommand):
         image_biomes = Image.new("RGB", (width, height))
         image_political = Image.new("RGB", (width, height))
 
+        start = time.time()
+        progress = 0
+        estimated_time = 0
         for x in range(width):
             for y in range(height):
-                tile_height = get_height(x, y, octaves, seed, min(width, height), border)
+                x_cyl, y_cyl, z_cyl = get_cylindrical_coordinates(x, y, width, height)
+                tile_height = get_height3(x_cyl, y_cyl, z_cyl, octaves, seed)
                 tile_type = "land" if tile_height >= 0 else "water"
 
                 image_rgb.putpixel((x, y), get_color(tile_height, tile_type))
+                progress += 1
+                estimated_time = (time.time() - start) / progress * (width * height - progress)
+                print(f"Progress: {progress}/{width * height}, estimated time: {estimated_time:.0f}s", end='\r')
 
-        image_rgb.save(settings.MEDIA_ROOT / f"{name}.png")
+        image_rgb.save(settings.MEDIA_ROOT / f"civ_maps/{name}.png")
+        print("done")
