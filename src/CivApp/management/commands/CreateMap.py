@@ -16,7 +16,7 @@ class Command(BaseCommand):
         parser.add_argument('size', metavar='s', type=int, nargs='+', help='Two integers: width height')
         parser.add_argument('-o', '--octaves', type=str, default="1 2 5 8 12", help='List of octaves')
         parser.add_argument('-sl', '--sealevel', type=float, default=0.5, help='Sea level/procentage')
-        parser.add_argument('-b', '--border', type=int, default=20, help='Border width')
+        parser.add_argument('-b', '--border', type=int, default=20, help='Vertical border width')
         parser.add_argument('-sd', '--seed', type=int, default=random.randint(1, 100000), help='Map seed')
         parser.add_argument('-n', '--name', type=str, default="map", help='Map file name')
 
@@ -29,6 +29,11 @@ class Command(BaseCommand):
         border = options['border']
         seed = options['seed']
         name = options['name']
+
+        # Handle wrong values
+        if border > height // 2:
+            print(f"Warning: wrong values of {border=}, changed to {height // 2}")
+            border = height // 2
         
         # Prepare images and octaves
         octaves = [int(o) for o in octaves.split()]
@@ -49,7 +54,7 @@ class Command(BaseCommand):
                 image_rgb.putpixel((x, y), get_color(tile_height, tile_type))
                 progress += 1
                 estimated_time = (time.time() - start) / progress * (width * height - progress)
-                print(f"Progress: {progress}/{width * height}, estimated time: {estimated_time:.0f}s", end='\r')
+                print(f"Progress: {progress / (width * height) * 100:.2f}%, estimated time: {estimated_time:.0f}s   ", end='\r')
 
         image_rgb.save(settings.MEDIA_ROOT / f"civ_maps/{name}.png")
         print("done")
