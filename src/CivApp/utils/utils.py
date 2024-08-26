@@ -46,6 +46,9 @@ def get_cylindrical_coordinates(x, y, width, height, distance_between_points=0.0
 def distance(x1, y1, x2, y2):
     return ((x2-x1)**2 + (y2-y1)**2)**0.5
 
+def distance_from_border(pos, size):
+    return min(pos, size-pos)
+
 def map_value(value, min1, max1, min2, max2):
     value = max(min(value, max1), min1)
     span1 = max1 - min1
@@ -78,6 +81,14 @@ def get_height3(x, y, z, octaves, seed):
         height += noise([x, y, z]) * .5**i
 
     return height
+
+def fix_height(tile_height, x, y, height, border, seed):
+    if border > 0:
+        noise = PerlinNoise(octaves=2, seed=seed)
+        distance = distance_from_border(y, height)
+        if distance <= border and tile_height >= 0:
+            tile_height *= map_value(distance, 0, border, -1, 1) * abs(noise([x/100]))
+    return tile_height
 
 def get_color(height, tile_type="land"):
     if tile_type == "land":
