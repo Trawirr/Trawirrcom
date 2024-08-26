@@ -17,6 +17,7 @@ class Command(BaseCommand):
         parser.add_argument('-o', '--octaves', type=str, default="1 2 5 8 12", help='List of octaves')
         parser.add_argument('-sl', '--sealevel', type=float, default=0.5, help='Sea level/procentage')
         parser.add_argument('-b', '--border', type=int, default=20, help='Vertical border width')
+        parser.add_argument('-m', '--margin', type=int, default=20, help='Margin describing shape of borders')
         parser.add_argument('-sd', '--seed', type=int, default=random.randint(1, 100000), help='Map seed')
         parser.add_argument('-n', '--name', type=str, default="map", help='Map file name')
 
@@ -27,6 +28,7 @@ class Command(BaseCommand):
         octaves = options['octaves']
         sea_level_arg = options['sealevel']
         border = options['border']
+        margin = options['margin']
         seed = options['seed']
         name = options['name']
 
