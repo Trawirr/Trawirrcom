@@ -110,6 +110,14 @@ def fix_height3(tile_height, x, y, height, border, seed):
             tile_height = map_value(distance, 1, border, -1, tile_height)
     return tile_height
 
+def fix_height4(tile_height, x, y, height, border, seed):
+    if border > 0:
+        noise = PerlinNoise(octaves=2, seed=seed)
+        distance = distance_from_border(y, height)
+        if distance <= border:
+            tile_height = map_value(distance, 1, border, -abs(noise([x/100])), tile_height)
+    return tile_height
+
 def get_color(height, tile_type="land"):
     if tile_type == "land":
         heights, colors = HEIGHTS_LAND, COLORS_LAND
