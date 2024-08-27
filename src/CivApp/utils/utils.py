@@ -47,7 +47,7 @@ def distance(x1, y1, x2, y2):
     return ((x2-x1)**2 + (y2-y1)**2)**0.5
 
 def distance_from_border(pos, size):
-    return min(pos, size-pos)
+    return min(pos, size + 1 - pos)
 
 def map_value(value, min1, max1, min2, max2):
     value = max(min(value, max1), min1)
@@ -86,8 +86,28 @@ def fix_height(tile_height, x, y, height, border, seed):
     if border > 0:
         noise = PerlinNoise(octaves=2, seed=seed)
         distance = distance_from_border(y, height)
+        if distance == 1 and tile_height >= 0:
+            tile_height *= -0.1 * abs(noise([x/100]))
+        elif distance <= border and tile_height >= 0:
+            tile_height *= map_value(distance, 1, border, 0, 1)# * abs(noise([x/100]))
+    return tile_height
+
+def fix_height2(tile_height, x, y, height, border, seed):
+    if border > 0:
+        noise = PerlinNoise(octaves=2, seed=seed)
+        distance = distance_from_border(y, height)
+        # if distance == 1 and tile_height >= 0:
+        #     tile_height = -1
         if distance <= border and tile_height >= 0:
-            tile_height *= map_value(distance, 0, border, -1, 1) * abs(noise([x/100]))
+            tile_height = map_value(distance, 1, border, -tile_height, tile_height)
+    return tile_height
+
+def fix_height3(tile_height, x, y, height, border, seed):
+    if border > 0:
+        noise = PerlinNoise(octaves=2, seed=seed)
+        distance = distance_from_border(y, height)
+        if distance <= border:
+            tile_height = map_value(distance, 1, border, -1, tile_height)
     return tile_height
 
 def get_color(height, tile_type="land"):
