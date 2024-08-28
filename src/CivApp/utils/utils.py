@@ -64,14 +64,6 @@ def get_height(x, y, octaves, seed, width, height, border):
     height = 0
     for i, noise in enumerate(noises):
         height += noise([x/100, y/100]) * .5**i
-
-    # if border > 0:
-    #     distance_from_edge = distance(x, y, width//2, height//2) - min(width,height)//2 + border
-    #     if distance_from_edge > 0:
-    #         height -= map_value(distance_from_edge, 0, border, 0, limit)
-
-    # if height > 0:
-    #     height = lower_height(height)
     return height
 
 def get_height3(x, y, z, octaves, seed):
@@ -89,15 +81,13 @@ def fix_height(tile_height, x, y, height, border, seed):
         if distance == 1 and tile_height >= 0:
             tile_height *= -0.1 * abs(noise([x/100]))
         elif distance <= border and tile_height >= 0:
-            tile_height *= map_value(distance, 1, border, 0, 1)# * abs(noise([x/100]))
+            tile_height *= map_value(distance, 1, border, 0, 1)
     return tile_height
 
 def fix_height2(tile_height, x, y, height, border, seed):
     if border > 0:
         noise = PerlinNoise(octaves=2, seed=seed)
         distance = distance_from_border(y, height)
-        # if distance == 1 and tile_height >= 0:
-        #     tile_height = -1
         if distance <= border and tile_height >= 0:
             tile_height = map_value(distance, 1, border, -tile_height, tile_height)
     return tile_height
@@ -117,6 +107,18 @@ def fix_height4(tile_height, x, y, height, border, seed):
         if distance <= border:
             tile_height = map_value(distance, 1, border, -abs(noise([x/100])), tile_height)
     return tile_height
+
+def fix_height5(tile_height, x, y, width, height, border, seed, octaves):
+    x_cyl, y_cyl, z_cyl = get_cylindrical_coordinates(x, y, width, height)
+    if border > 0:
+        distance = distance_from_border(y, height)
+        if distance <= border:
+            tile_height2 = get_height3(x_cyl, y_cyl + seed, z_cyl, octaves, seed)
+            tile_height = map_value(distance, 1, border, -abs(tile_height2), tile_height)
+    return tile_height
+
+def calculate_height(tile_height: float, x: int, y: int, width: int, height: int, border: int, seed: int, octaves: list[int], fix_mode: int = 5):
+    
 
 def get_color(height, tile_type="land"):
     if tile_type == "land":

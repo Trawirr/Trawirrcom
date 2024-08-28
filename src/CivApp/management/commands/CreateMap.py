@@ -51,7 +51,8 @@ class Command(BaseCommand):
             for y in range(height):
                 x_cyl, y_cyl, z_cyl = get_cylindrical_coordinates(x, y, width, height)
                 tile_height = get_height3(x_cyl, y_cyl, z_cyl, octaves, seed)
-                tile_height = fix_height4(tile_height, x, y, height, border, seed)
+                tile_height = fix_height5(tile_height, x, y, width, height, border, seed, octaves)
+                #tile_height = fix_height4(tile_height, x, y, height, border, seed)
                 tile_type = "land" if tile_height >= 0 else "water"
 
                 image_rgb.putpixel((x, y), get_color(tile_height, tile_type))
@@ -60,4 +61,4 @@ class Command(BaseCommand):
                 print(f"Progress: {progress / (width * height) * 100:.2f}%, estimated time: {estimated_time:.0f}s   ", end='\r')
 
         image_rgb.save(settings.MEDIA_ROOT / f"civ_maps/{name}.png")
-        print("done")
+        print("\ndone")
