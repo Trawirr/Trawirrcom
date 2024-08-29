@@ -118,7 +118,7 @@ def fix_height5(tile_height, x, y, width, height, border, seed, octaves):
     return tile_height
 
 def calculate_height(tile_height: float, x: int, y: int, width: int, height: int, border: int, seed: int, octaves: list[int], fix_mode: int = 5):
-    
+     pass
 
 def get_color(height, tile_type="land"):
     if tile_type == "land":
