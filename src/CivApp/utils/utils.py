@@ -74,7 +74,7 @@ def get_height3(x, y, z, octaves, seed):
 
     return height
 
-def fix_height(tile_height, x, y, height, border, seed):
+def fix_height1(tile_height, x, y, height, border, seed):
     if border > 0:
         noise = PerlinNoise(octaves=2, seed=seed)
         distance = distance_from_border(y, height)
@@ -117,8 +117,8 @@ def fix_height5(tile_height, x, y, width, height, border, seed, octaves):
             tile_height = map_value(distance, 1, border, -abs(tile_height2), tile_height)
     return tile_height
 
-def calculate_height(tile_height: float, x: int, y: int, width: int, height: int, border: int, seed: int, octaves: list[int], fix_mode: int = 5):
-     fix_height_functions = [fix_height, fix_height2, fix_height3, fix_height4]
+def fix_height(tile_height: float, x: int, y: int, width: int, height: int, border: int, seed: int, octaves: list[int], fix_mode: int = 5):
+     fix_height_functions = [fix_height1, fix_height2, fix_height3, fix_height4]
      if fix_mode == 5:
          return fix_height5(tile_height, x, y, width, height, border, seed, octaves)
      else:

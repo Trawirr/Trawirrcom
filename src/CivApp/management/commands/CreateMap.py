@@ -51,8 +51,7 @@ class Command(BaseCommand):
             for y in range(height):
                 x_cyl, y_cyl, z_cyl = get_cylindrical_coordinates(x, y, width, height)
                 tile_height = get_height3(x_cyl, y_cyl, z_cyl, octaves, seed)
-                tile_height = fix_height5(tile_height, x, y, width, height, border, seed, octaves)
-                #tile_height = fix_height4(tile_height, x, y, height, border, seed)
+                tile_height = fix_height(tile_height, x, y, width, height, border, seed, octaves)
                 tile_type = "land" if tile_height >= 0 else "water"
 
                 image_rgb.putpixel((x, y), get_color(tile_height, tile_type))
