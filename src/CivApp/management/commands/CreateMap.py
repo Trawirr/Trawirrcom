@@ -54,7 +54,11 @@ class Command(BaseCommand):
                 tile_height = fix_height(tile_height, x, y, width, height, border, seed, octaves)
                 tile_type = "land" if tile_height >= 0 else "water"
 
+                # updating images
                 image_rgb.putpixel((x, y), get_color(tile_height, tile_type))
+                
+                if tile_type == "land": image_political.putpixel((x, y), (255, 255, 255))
+                else: image_political.putpixel((x, y), get_color(tile_height, tile_type))
 
                 # displaying progress
                 progress += 1
@@ -63,4 +67,5 @@ class Command(BaseCommand):
                 print(f"Progress: [{'#' * done_tenth}{'.' * (10 - done_tenth)}] {progress / (width * height) * 100:.2f}%, estimated time: {estimated_time:.0f}s   ", end='\r')
 
         image_rgb.save(settings.MEDIA_ROOT / f"civ_maps/{name}.png")
+        image_political.save(settings.MEDIA_ROOT / f"civ_maps/{name}_political.png")
         print("\ndone")
