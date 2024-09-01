@@ -55,9 +55,12 @@ class Command(BaseCommand):
                 tile_type = "land" if tile_height >= 0 else "water"
 
                 image_rgb.putpixel((x, y), get_color(tile_height, tile_type))
+
+                # displaying progress
                 progress += 1
                 estimated_time = (time.time() - start) / progress * (width * height - progress)
-                print(f"Progress: {progress / (width * height) * 100:.2f}%, estimated time: {estimated_time:.0f}s   ", end='\r')
+                done_tenth = int(progress / (width * height) * 10)
+                print(f"Progress: [{'#' * done_tenth}{'.' * (10 - done_tenth)}] {progress / (width * height) * 100:.2f}%, estimated time: {estimated_time:.0f}s   ", end='\r')
 
         image_rgb.save(settings.MEDIA_ROOT / f"civ_maps/{name}.png")
         print("\ndone")
