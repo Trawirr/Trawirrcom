@@ -15,6 +15,7 @@ class Command(BaseCommand):
         # Map parameters
         parser.add_argument('size', metavar='s', type=int, nargs='+', help='Two integers: width height')
         parser.add_argument('-o', '--octaves', type=str, default="1 2 5 8 12", help='List of octaves')
+        parser.add_argument('-bo', '--biomeoctaves', type=str, default="1 2 5 8 12", help='List of octaves for biome generation')
         parser.add_argument('-sl', '--sealevel', type=float, default=0.5, help='Sea level/procentage')
         parser.add_argument('-b', '--border', type=int, default=20, help='Vertical border width')
         parser.add_argument('-m', '--margin', type=int, default=20, help='Margin describing shape of borders')
@@ -26,6 +27,7 @@ class Command(BaseCommand):
         # Fetch options
         width, height = options['size']
         octaves = options['octaves']
+        octaves_biome = options['biomeoctaves']
         sea_level_arg = options['sealevel']
         border = options['border']
         margin = options['margin']
@@ -39,7 +41,7 @@ class Command(BaseCommand):
         
         # Prepare images and octaves
         octaves = [int(o) for o in octaves.split()]
-        image_heightmap = Image.new("L", (width, height))
+        image_heightmap = Image.new("RGB", (width, height))
         image_rgb = Image.new("RGB", (width, height))
         image_biomes = Image.new("RGB", (width, height))
         image_political = Image.new("RGB", (width, height))
@@ -55,6 +57,8 @@ class Command(BaseCommand):
                 tile_type = "land" if tile_height >= 0 else "water"
 
                 # updating images
+                image_heightmap.putpixel((x, y), convert_height_to_color(tile_height, octaves))
+
                 image_rgb.putpixel((x, y), get_color(tile_height, tile_type))
                 
                 if tile_type == "land": image_political.putpixel((x, y), (255, 255, 255))
@@ -66,6 +70,7 @@ class Command(BaseCommand):
                 done_tenth = int(progress / (width * height) * 10)
                 print(f"Progress: [{'#' * done_tenth}{'.' * (10 - done_tenth)}] {progress / (width * height) * 100:.2f}%, estimated time: {estimated_time:.0f}s   ", end='\r')
 
+        image_heightmap.save(settings.MEDIA_ROOT / f"civ_maps/{name}_heightmap.png")
         image_rgb.save(settings.MEDIA_ROOT / f"civ_maps/{name}.png")
         image_political.save(settings.MEDIA_ROOT / f"civ_maps/{name}_political.png")
         print("\ndone")

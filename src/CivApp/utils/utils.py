@@ -42,7 +42,7 @@ def convert_height_to_color(height: float, octaves: list[int]):
     for i in range(3):
         color[2-i] = int(value % 256)
         value = (value - color[2-i]) / 256
-    return color
+    return tuple(color)
 
 def convert_color_to_height(color: list[int] | tuple[int]):
     exps = [256 ** (2 - i) for i in range(3)]
