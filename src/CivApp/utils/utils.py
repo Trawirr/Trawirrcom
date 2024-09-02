@@ -35,6 +35,25 @@ COLORS_LAND = (
     (130, 40, 23)
 )
 
+def convert_height_to_color(height: float, octaves: list[int]):
+    limit = 0.5 * (1 - 0.5**len(octaves)) / 0.5
+    print(f"{limit=}")
+    value = int(map_value(height, -limit, limit, 0, 256**3))
+    print(f"{value=}")
+    color = [0, 0, 0]
+    for i in range(3):
+        color[2-i] = int(value % 256)
+        value = (value - color[2-i]) / 256
+        print(f"{i=}, {color=}, {value=}")
+    return color
+
+def convert_color_to_height(color: list[int] | tuple[int]):
+    exps = [256 ** (2 - i) for i in range(3)]
+    value = 0
+    for c, e in zip(color, exps):
+        value += c * e
+    return value
+
 def get_cylindrical_coordinates(x, y, width, height, distance_between_points=0.01):
     radius = width * distance_between_points / (2 * np.pi)
 
