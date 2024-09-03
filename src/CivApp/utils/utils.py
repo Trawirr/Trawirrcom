@@ -35,6 +35,40 @@ COLORS_LAND = (
     (130, 40, 23)
 )
 
+BIOME_RULES = [
+    #[humidity, temperature]
+    [0, 0.8],
+    [0.2, 0.0],
+    [0.2, 0.4],
+    [0.4, -0.2],
+    [0.6, 0.6],
+    [1, 0.85],
+    [0.5, -0.7],
+    [0, -0.9]
+]
+
+BIOME_NAMES = [
+    "Desert",
+    "Grassland",
+    "Grassland",
+    "Forest",
+    "Forest",
+    "Tropical forest",
+    "Boreal forest",
+    "Tundra",
+]
+
+BIOME_COLORS = [
+    (255, 255, 102),
+    (204, 255, 153),
+    (204, 255, 153),
+    (0, 153, 0),
+    (0, 153, 0),
+    (51, 255, 51),
+    (102, 51, 0),
+    (204, 255, 255),
+]
+
 def convert_height_to_color(height: float, octaves: list[int]):
     limit = 0.5 * (1 - 0.5**len(octaves)) / 0.5
     value = int(map_value(height, -limit, limit, 0, 256**3))
@@ -151,8 +185,18 @@ def get_color(height, tile_type="land"):
         if h >= height:
             return colors[i]
         
-def get_humidity3(x: int, y: int, z: int, seed: int, octave: int = 3):
-    return PerlinNoise(octaves=octave, seed=seed)([x, y, z])
-        
 def get_temperature3(x: int, y: int, z: int, seed: int, octave: int = 2):
     return PerlinNoise(octaves=octave, seed=seed)([x, y, z])
+        
+def get_humidity3(x: int, y: int, z: int, seed: int, octave: int = 3):
+    return PerlinNoise(octaves=octave, seed=seed)([x, y, z])
+
+def get_biome_color(temperature: float, humidity: float, biome_coords=BIOME_RULES):
+    min_dist = 100
+    biome_id = None
+    for i, rule in enumerate(biome_coords):
+        distance_to_biome = distance(temperature, humidity, rule[0], rule[1])
+        if distance_to_biome < min_dist:
+            min_dist = distance_to_biome
+            biome_id = i
+    return BIOME_COLORS[biome_id]
