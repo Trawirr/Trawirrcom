@@ -150,3 +150,9 @@ def get_color(height, tile_type="land"):
     for i, h in enumerate(heights):
         if h >= height:
             return colors[i]
+        
+def get_humidity3(x: int, y: int, z: int, seed: int, octave: int = 3):
+    return PerlinNoise(octaves=octave, seed=seed)([x, y, z])
+        
+def get_temperature3(x: int, y: int, z: int, seed: int, octave: int = 2):
+    return PerlinNoise(octaves=octave, seed=seed)([x, y, z])
