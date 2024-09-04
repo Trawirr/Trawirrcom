@@ -2,6 +2,7 @@ from perlin_noise import PerlinNoise
 import numpy as np
 
 HEIGHTS_WATER = (
+    0.0,
     0.05,
     0.2,
     0.7,
@@ -10,6 +11,7 @@ HEIGHTS_WATER = (
 )
 
 COLORS_WATER = (
+    (0, 0, 0),
     (0, 0, 50),
     (25, 100, 140),
     (35, 145, 200),
@@ -18,6 +20,7 @@ COLORS_WATER = (
 )
 
 HEIGHTS_LAND = (
+    0.0,
     0.1,
     0.3,
     0.5,
@@ -27,6 +30,7 @@ HEIGHTS_LAND = (
 )
 
 COLORS_LAND = (
+    (105, 183, 154),
     (114, 193, 134),
     (162, 215, 164),
     (225, 227, 158),
@@ -68,6 +72,14 @@ BIOME_COLORS = [
     (102, 51, 0),
     (204, 255, 255),
 ]
+
+def densify_array(array: list, factor: int):
+    dense_array = []
+    for i in range(len(array) - 1):
+        for l in np.linspace(array[i], array[i+1], factor, endpoint=False):
+            dense_array.append(l)
+    dense_array.append(array[-1])
+    return dense_array
 
 def convert_height_to_color(height: float, octaves: list[int]):
     limit = 0.5 * (1 - 0.5**len(octaves)) / 0.5
@@ -174,7 +186,7 @@ def fix_height(tile_height: float, x: int, y: int, width: int, height: int, bord
      else:
          return fix_height_functions[fix_mode-1](tile_height, x, y, height, border, seed)
 
-def get_color(height, tile_type="land"):
+def get_color(height, tile_type="land", smoothing: bool = False):
     if tile_type == "land":
         heights, colors = HEIGHTS_LAND, COLORS_LAND
     elif tile_type == "water":
@@ -183,7 +195,10 @@ def get_color(height, tile_type="land"):
 
     for i, h in enumerate(heights):
         if h >= height:
-            return colors[i]
+            if smoothing:
+                return tuple(int(map_value(height, heights[i-1], heights[i], colors[i-1][c], colors[i][c])) for c in range(3))
+            else:
+                return colors[i]
         
 def get_temperature3(x: int, y: int, z: int, seed: int, octave: int = 2):
     return PerlinNoise(octaves=octave, seed=seed)([x, y, z])
