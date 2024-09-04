@@ -20,8 +20,8 @@ class Command(BaseCommand):
         parser.add_argument('-b', '--border', type=int, default=20, help='Vertical border width')
         parser.add_argument('-m', '--margin', type=int, default=20, help='Margin describing shape of borders')
         parser.add_argument('-sd', '--seed', type=int, default=random.randint(1, 100000), help='Map seed')
-        parser.add_argument('-sh', '--shadow', type=bool, default=False, help='Boolean for generating shadow')
-        parser.add_argument('-sm', '--smooth', type=bool, default=False, help='Boolean for coloring mode')
+        parser.add_argument('-sh', '--shadow', dest='shadow', action='store_true', help='Boolean for generating shadow')
+        parser.add_argument('-sm', '--smooth', type=int, default=1, help='Parameter of color smoothing')
         parser.add_argument('-n', '--name', type=str, default="map", help='Map file name')
 
     def handle(self, *args, **options):
@@ -69,13 +69,13 @@ class Command(BaseCommand):
                 # updating images
                 image_heightmap.putpixel((x, y), convert_height_to_color(tile_height, octaves))
 
-                image_rgb.putpixel((x, y), get_color(tile_height, tile_type))
+                image_rgb.putpixel((x, y), get_color(tile_height, tile_type, smooth))
 
                 if tile_type == "land": image_political.putpixel((x, y), (255, 255, 255))
-                else: image_political.putpixel((x, y), get_color(tile_height, tile_type))
+                else: image_political.putpixel((x, y), get_color(tile_height, tile_type, smooth))
 
                 if tile_type == "land": image_biomes.putpixel((x, y), get_biome_color(temperature, humidity))
-                else: image_political.putpixel((x, y), get_color(tile_height, tile_type))
+                else: image_political.putpixel((x, y), get_color(tile_height, tile_type, smooth))
 
                 # displaying progress
                 progress += 1

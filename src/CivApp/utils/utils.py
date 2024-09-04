@@ -76,7 +76,7 @@ BIOME_COLORS = [
 def densify_array(array: list, factor: int):
     dense_array = []
     for i in range(len(array) - 1):
-        for l in np.linspace(array[i], array[i+1], factor, endpoint=False):
+        for l in np.linspace(array[i], array[i+1], factor, dtype=float, endpoint=False):
             dense_array.append(l)
     dense_array.append(array[-1])
     return dense_array
@@ -186,19 +186,24 @@ def fix_height(tile_height: float, x: int, y: int, width: int, height: int, bord
      else:
          return fix_height_functions[fix_mode-1](tile_height, x, y, height, border, seed)
 
-def get_color(height, tile_type="land", smoothing: bool = False):
+def get_color(height, tile_type="land", smoothing: int = 1):
     if tile_type == "land":
         heights, colors = HEIGHTS_LAND, COLORS_LAND
     elif tile_type == "water":
         heights, colors = HEIGHTS_WATER, COLORS_WATER
         height += 1
 
+    if smoothing > 0:
+        heights = densify_array(heights, smoothing)
+        colors = densify_array(colors, smoothing)
+
     for i, h in enumerate(heights):
         if h >= height:
-            if smoothing:
+            # print(f"{i=}, {h=}, {height=}, {colors[i]=}, {tile_type=}")
+            if smoothing == 0:
                 return tuple(int(map_value(height, heights[i-1], heights[i], colors[i-1][c], colors[i][c])) for c in range(3))
             else:
-                return colors[i]
+                return tuple(int(c) for c in colors[i])
         
 def get_temperature3(x: int, y: int, z: int, seed: int, octave: int = 2):
     return PerlinNoise(octaves=octave, seed=seed)([x, y, z])
