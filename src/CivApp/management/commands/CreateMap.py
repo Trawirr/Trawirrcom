@@ -20,6 +20,8 @@ class Command(BaseCommand):
         parser.add_argument('-b', '--border', type=int, default=20, help='Vertical border width')
         parser.add_argument('-m', '--margin', type=int, default=20, help='Margin describing shape of borders')
         parser.add_argument('-sd', '--seed', type=int, default=random.randint(1, 100000), help='Map seed')
+        parser.add_argument('-sh', '--shadow', type=bool, default=False, help='Boolean for generating shadow')
+        parser.add_argument('-sm', '--smooth', type=bool, default=False, help='Boolean for coloring mode')
         parser.add_argument('-n', '--name', type=str, default="map", help='Map file name')
 
     def handle(self, *args, **options):
@@ -32,6 +34,8 @@ class Command(BaseCommand):
         border = options['border']
         margin = options['margin']
         seed = options['seed']
+        shadow = options['shadow']
+        smooth = options['smooth']
         name = options['name']
 
         # Handle wrong values
