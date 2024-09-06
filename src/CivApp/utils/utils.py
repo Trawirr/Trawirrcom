@@ -226,3 +226,10 @@ def get_biome_color(temperature: float, humidity: float, biome_coords=BIOME_RULE
             min_dist = distance_to_biome
             biome_id = i
     return BIOME_COLORS[biome_id]
+
+def is_on_edge(x: int, y: int, width: int, height: int):
+    if x == 0 or y == 0:
+        return False
+    if x == width - 1 or y == height - 1:
+        return False
+    return True
