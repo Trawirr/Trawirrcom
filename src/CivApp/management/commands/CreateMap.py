@@ -22,6 +22,7 @@ class Command(BaseCommand):
         parser.add_argument('-sd', '--seed', type=int, default=random.randint(1, 100000), help='Map seed')
         parser.add_argument('-sh', '--shadow', dest='shadow', action='store_true', help='Boolean for generating shadow')
         parser.add_argument('-sm', '--smooth', type=int, default=1, help='Parameter of color smoothing')
+        parser.add_argument('-ad', '--adjust', dest='adjust', action='store_true', help='Boolean of optional height adjustment')
         parser.add_argument('-n', '--name', type=str, default="map", help='Map file name')
 
     def handle(self, *args, **options):
@@ -36,6 +37,7 @@ class Command(BaseCommand):
         seed = options['seed']
         shadow = options['shadow']
         smooth = options['smooth']
+        adjust = options['adjust']
         name = options['name']
 
         # Handle wrong values
@@ -61,6 +63,8 @@ class Command(BaseCommand):
                 tile_height = get_height3(x_cyl, y_cyl, z_cyl, octaves, seed)
                 tile_height = fix_height(tile_height, x, y, width, height, border, seed, octaves)
                 tile_type = "land" if tile_height >= 0 else "water"
+
+                if adjust and tile_type == "land": tile_height = process_height(tile_height)
 
                 # biome map
                 humidity = get_humidity3(x_cyl, y_cyl, z_cyl, seed)
