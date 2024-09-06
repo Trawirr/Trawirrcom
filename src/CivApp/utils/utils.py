@@ -185,6 +185,12 @@ def fix_height(tile_height: float, x: int, y: int, width: int, height: int, bord
          return fix_height5(tile_height, x, y, width, height, border, seed, octaves)
      else:
          return fix_height_functions[fix_mode-1](tile_height, x, y, height, border, seed)
+     
+def process_height(tile_height: float):
+    # lowering values lower than 0.25
+    tile_height **= map_value(tile_height, 0, 0.25, 1.5, 1)
+
+    return tile_height
 
 def get_color(height, tile_type="land", smoothing: int = 1):
     if tile_type == "land":
