@@ -51,6 +51,7 @@ class Command(BaseCommand):
         image_rgb = Image.new("RGB", (width, height))
         image_biomes = Image.new("RGB", (width, height))
         image_political = Image.new("RGB", (width, height))
+        image_shadows = Image.new("RGBA", (width, height))
 
         start = time.time()
         progress = 0
@@ -81,14 +82,25 @@ class Command(BaseCommand):
                 if tile_type == "land": image_biomes.putpixel((x, y), get_biome_color(temperature, humidity))
                 else: image_political.putpixel((x, y), get_color(tile_height, tile_type, smooth))
 
+                if tile_type == "land" and not is_on_horizontal_edge(y, height):
+                    tile_height_adj = convert_color_to_height(image_heightmap.getpixel(((x-1) % width, y-1)), octaves)
+                    image_shadows.putpixel((x, y), get_shadow_color(tile_height, tile_height_adj))
+
                 # displaying progress
                 progress += 1
                 estimated_time = (time.time() - start) / progress * (width * height - progress)
                 done_tenth = int(progress / (width * height) * 10)
                 print(f"Progress: [{'#' * done_tenth}{'.' * (10 - done_tenth)}] {progress / (width * height) * 100:.2f}%, estimated time: {estimated_time:.0f}s   ", end='\r')
 
+        # finishing
+        if shadow: 
+            image_rgb = image_rgb.convert("RGBA")
+            image_rgb = Image.alpha_composite(image_rgb, image_shadows)
+
+        # saving
         image_heightmap.save(settings.MEDIA_ROOT / f"civ_maps/{name}_heightmap.png")
         image_rgb.save(settings.MEDIA_ROOT / f"civ_maps/{name}.png")
         image_political.save(settings.MEDIA_ROOT / f"civ_maps/{name}_political.png")
         image_biomes.save(settings.MEDIA_ROOT / f"civ_maps/{name}_biomes.png")
+        image_shadows.save(settings.MEDIA_ROOT / f"civ_maps/{name}_shadows.png")
         print("\ndone")

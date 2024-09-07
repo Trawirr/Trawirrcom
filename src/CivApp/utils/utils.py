@@ -73,6 +73,8 @@ BIOME_COLORS = [
     (204, 255, 255),
 ]
 
+SHADOW_COLORS = [0, 0, 0]
+
 def densify_array(array: list, factor: int):
     dense_array = []
     for i in range(len(array) - 1):
@@ -90,12 +92,13 @@ def convert_height_to_color(height: float, octaves: list[int]):
         value = (value - color[2-i]) / 256
     return tuple(color)
 
-def convert_color_to_height(color: list[int] | tuple[int]):
+def convert_color_to_height(color: list[int] | tuple[int], octaves: list[int]):
+    limit = 0.5 * (1 - 0.5**len(octaves)) / 0.5
     exps = [256 ** (2 - i) for i in range(3)]
     value = 0
     for c, e in zip(color, exps):
         value += c * e
-    return value
+    return map_value(value, 0, 256**3, -limit, limit)
 
 def get_cylindrical_coordinates(x, y, width, height, distance_between_points=0.01):
     radius = width * distance_between_points / (2 * np.pi)
@@ -229,7 +232,13 @@ def get_biome_color(temperature: float, humidity: float, biome_coords=BIOME_RULE
 
 def is_on_edge(x: int, y: int, width: int, height: int):
     if x == 0 or y == 0:
-        return False
+        return True
     if x == width - 1 or y == height - 1:
-        return False
-    return True
+        return True
+    return False
+
+def is_on_horizontal_edge(y: int, height: int):
+    return is_on_edge(1, y, 3, height)
+
+def get_shadow_color(height: float, height_adj: float):
+    return tuple(SHADOW_COLORS + [int(map_value(height_adj - height, 0, 0.2, 0, 100))])
